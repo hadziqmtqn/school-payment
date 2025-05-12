@@ -6,7 +6,7 @@
     dir="ltr"
     data-theme="theme-default"
     data-assets-path="{{ url('https://hadziqmtqn.github.io/materialize/assets/') }}"
-    data-template="horizontal-menu-template">
+    data-template="vertical-menu-template">
 <head>
     <meta charset="utf-8" />
     <meta
@@ -15,7 +15,7 @@
 
     <title>{{ !isset($subTitle) ? $title : $subTitle }} | {{ $application['name'] }}</title>
 
-    <meta name="description" content="{{ $application['description'] }}" />
+    <meta name="description" content="" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ $application['logo'] }}" />
