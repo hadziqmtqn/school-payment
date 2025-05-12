@@ -1,0 +1,44 @@
+[
+  {
+    "name": "Pengaturan",
+    "type": "main_menu",
+    "visibility": [
+      "application-read",
+      "role-read",
+      "menu-read",
+      "admin-read"
+    ],
+    "url": "#",
+    "icon": "cog-outline",
+    "sub_menu": [
+      {
+        "name": "Aplikasi",
+        "type": "sub_menu",
+        "visibility": ["application-read"],
+        "url": "/application",
+        "icon": "apps"
+      },
+      {
+        "name": "Role",
+        "type": "sub_menu",
+        "visibility": ["role-read"],
+        "url": "/role",
+        "icon": "shield-check-outline"
+      },
+      {
+        "name": "Menu",
+        "type": "sub_menu",
+        "visibility": ["menu-read"],
+        "url": "/menu",
+        "icon": "menu"
+      },
+      {
+        "name": "Admin",
+        "type": "sub_menu",
+        "visibility": ["admin-read"],
+        "url": "/admin",
+        "icon": "shield-account-outline"
+      }
+    ]
+  }
+]
