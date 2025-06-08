@@ -6,6 +6,7 @@ use App\Http\Controllers\Dashboard\Setting\AccountController;
 use App\Http\Controllers\Dashboard\Setting\ApplicationController;
 use App\Http\Controllers\Dashboard\Setting\MenuController;
 use App\Http\Controllers\Dashboard\Setting\PermissionController;
+use App\Http\Controllers\Dashboard\Setting\RoleController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -36,6 +37,13 @@ Route::middleware('auth')->group(function () {
     Route::prefix('application')->group(function () {
         Route::get('/', [ApplicationController::class, 'index'])->name('application.index');
         Route::post('/store', [ApplicationController::class, 'store'])->name('application.store');
+    });
+
+    Route::prefix('role')->group(function () {
+        Route::get('/', [RoleController::class, 'index'])->name('role.index');
+        Route::post('/datatable', [RoleController::class, 'datatable']);
+        Route::get('/{role:slug}/edit', [RoleController::class, 'edit'])->name('role.edit');
+        Route::put('/{role:slug}/update', [RoleController::class, 'update'])->name('role.update');
     });
 
     // TODO Select
