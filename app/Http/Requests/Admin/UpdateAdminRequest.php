@@ -4,16 +4,18 @@ namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AdminRequest extends FormRequest
+class UpdateAdminRequest extends FormRequest
 {
     public function rules(): array
     {
         return [
             'name' => ['required'],
             'email' => ['required', 'email', 'unique:users,email'],
-            'password' => ['nullable', 'confirmed', 'min:8', 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/'],
+            'password' => ['required', 'confirmed', 'min:8', 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/'],
             'whatsapp_number' => ['required', 'min_digits:10', 'max_digits:13'],
             'mark_as_contact' => ['required', 'boolean'],
+            'photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:500'],
+            'is_active' => ['required', 'boolean']
         ];
     }
 
@@ -36,7 +38,9 @@ class AdminRequest extends FormRequest
             'email' => 'email',
             'password' => 'kata sandi',
             'whatsapp_number' => 'no. whatsapp',
-            'mark_as_contact' => 'tandai kontak utama'
+            'mark_as_contact' => 'tandai kontak utama',
+            'photo' => 'foto',
+            'is_active' => 'status aktif'
         ];
     }
 }

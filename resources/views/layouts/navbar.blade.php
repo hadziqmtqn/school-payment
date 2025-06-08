@@ -85,6 +85,14 @@
                                 <span class="align-middle">Akun Saya</span>
                             </a>
                         </li>
+                        @if(auth()->user()->hasRole('super_admin'))
+                        <li>
+                            <a class="dropdown-item" href="{{ route('role.index') }}">
+                                <i class="mdi mdi-shield-account-outline me-2"></i>
+                                <span class="align-middle">Role</span>
+                            </a>
+                        </li>
+                        @endif
                         <li>
                             <div class="dropdown-divider"></div>
                         </li>

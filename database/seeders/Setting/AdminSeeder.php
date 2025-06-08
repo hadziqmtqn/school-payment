@@ -33,5 +33,11 @@ class AdminSeeder extends Seeder
         $admin->user_id = $mainAdmin->id;
         $admin->whatsapp_number = '085157088717';
         $admin->save();
+
+        // AdminRole
+        Role::create([
+            'slug' => Str::uuid()->toString(),
+            'name' => 'admin'
+        ]);
     }
 }

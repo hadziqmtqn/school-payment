@@ -62,7 +62,7 @@ class RoleController extends Controller implements HasMiddleware
                             $query->whereAny(['name'], 'LIKE', '%' . $search . '%');
                         });
                     })
-                    ->addColumn('name', fn($row) => ucfirst(str_replace('-', ' ', $row->name)))
+                    ->addColumn('name', fn($row) => ucfirst(str_replace('_', ' ', $row->name)))
                     ->addColumn('userCount', function ($row) {
                         return '<span class="badge rounded-pill bg-label-warning">'. $row->users()->count() .'</span>';
                     })

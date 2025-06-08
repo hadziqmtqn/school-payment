@@ -4,7 +4,10 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\MediaLibrary\HasMedia;
@@ -60,5 +63,17 @@ class User extends Authenticatable implements HasMedia
         return SlugOptions::create()
             ->generateSlugsFrom('name')
             ->saveSlugsTo('username');
+    }
+
+    public function admin(): HasOne
+    {
+        return $this->hasOne(Admin::class, 'user_id');
+    }
+
+    // TODO Scope
+    #[Scope]
+    protected function filterByUsername(Builder $query, $username): Builder
+    {
+        return $query->where('username', $username);
     }
 }

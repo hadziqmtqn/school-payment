@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Dashboard\AdminDashboardController;
 use App\Http\Controllers\Dashboard\Setting\AccountController;
+use App\Http\Controllers\Dashboard\Setting\AdminController;
 use App\Http\Controllers\Dashboard\Setting\ApplicationController;
 use App\Http\Controllers\Dashboard\Setting\MenuController;
 use App\Http\Controllers\Dashboard\Setting\PermissionController;
@@ -44,6 +45,17 @@ Route::middleware('auth')->group(function () {
         Route::post('/datatable', [RoleController::class, 'datatable']);
         Route::get('/{role:slug}/edit', [RoleController::class, 'edit'])->name('role.edit');
         Route::put('/{role:slug}/update', [RoleController::class, 'update'])->name('role.update');
+    });
+
+    Route::prefix('admin')->group(function () {
+        Route::get('/', [AdminController::class, 'index'])->name('admin.index');
+        Route::post('/datatable', [AdminController::class, 'datatable']);
+        Route::post('/store', [AdminController::class, 'store'])->name('admin.store');
+        Route::get('/{user:username}', [AdminController::class, 'show'])->name('admin.show');
+        Route::put('/{user:username}/update', [AdminController::class, 'update'])->name('admin.update');
+        Route::delete('/{user:username}/delete', [AdminController::class, 'destroy']);
+        Route::post('/{user:username}/restore', [AdminController::class, 'restore']);
+        Route::delete('/{user:username}/force-delete', [AdminController::class, 'forceDelete']);
     });
 
     // TODO Select
