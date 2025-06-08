@@ -62,9 +62,8 @@
                 <div class="app-brand justify-content-center mt-5">
                     <a href="{{ url('/') }}" class="app-brand-link gap-2">
                         <span class="app-brand-logo demo">
-                          
+                            <img src="{{ $application['logo'] }}" alt="logo" style="width: 80px">
                         </span>
-                        <span class="app-brand-text demo text-heading fw-bold">{{ $application['name'] }}</span>
                     </a>
                 </div>
                 <!-- /Logo -->

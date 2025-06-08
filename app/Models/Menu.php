@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
@@ -33,5 +35,26 @@ class Menu extends Model
         static::creating(function (Menu $menu) {
             $menu->slug = Str::uuid()->toString();
         });
+    }
+
+    // TODO Scope
+    #[Scope]
+    protected function search(Builder $query, $search): Builder
+    {
+        return $query->when($search['search'] ?? null, function ($query) use ($search) {
+            $query->where('name', 'like', '%' . $search['search'] . '%');
+        });
+    }
+
+    #[Scope]
+    protected function filterByType(Builder $query, $type): Builder
+    {
+        return $query->where('type', $type);
+    }
+
+    #[Scope]
+    protected function mainMenu(Builder $query, $mainMenu): Builder
+    {
+        return $query->where('main_menu', $mainMenu);
     }
 }
