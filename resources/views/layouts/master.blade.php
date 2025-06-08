@@ -20,7 +20,6 @@
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ $application['logo'] }}" />
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
     @include('layouts.head')
     @yield('styles')
 </head>
@@ -56,7 +55,7 @@
                         <div class="footer-container py-3 text-center">
                             <div class="mb-2 mb-md-0">
                                 © {{ now()->year }}, made with <span class="text-danger"><i class="tf-icons mdi mdi-heart"></i></span> by
-                                <a href="{{ $application['website'] }}" target="_blank" class="footer-link fw-medium">Tim Dev {{ $application['name'] }}</a>
+                                <a href="/" class="footer-link fw-medium">Tim Dev {{ $application['name'] }}</a>
                             </div>
                         </div>
                     </div>

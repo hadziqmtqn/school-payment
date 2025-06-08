@@ -10,7 +10,7 @@ class ApplicationSeeder extends Seeder
     public function run(): void
     {
         $application = new Application();
-        $application->name = 'SPP';
+        $application->name = 'Pembayaran SPP';
         $application->school_name = 'Sekolah Nusantara';
         $application->notification_method = 'whatsapp';
         $application->save();

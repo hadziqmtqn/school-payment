@@ -3,6 +3,7 @@
 namespace App\Services\Setting;
 
 use App\Models\Application;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
 class ApplicationService
@@ -23,7 +24,7 @@ class ApplicationService
             'name' => $application->name,
             'schoolName' => $application->school_name,
             'notificationMethod' => $application->notification_method,
-            'logo' => null
+            'logo' => $application->hasMedia('logo') ? $application->getFirstTemporaryUrl(Carbon::now()->addHour(), 'logo') : asset('assets/sekolah.png')
         ]);
     }
 }

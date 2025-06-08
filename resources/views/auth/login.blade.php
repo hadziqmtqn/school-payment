@@ -64,50 +64,40 @@
                         <span class="app-brand-logo demo">
                           
                         </span>
-                        <span class="app-brand-text demo text-heading fw-bold">Materialize</span>
+                        <span class="app-brand-text demo text-heading fw-bold">{{ $application['name'] }}</span>
                     </a>
                 </div>
                 <!-- /Logo -->
 
                 <div class="card-body mt-2">
-                    <h4 class="mb-2">Welcome to Materialize! 👋</h4>
-                    <p class="mb-4">Please sign-in to your account and start the adventure</p>
+                    <h4 class="mb-2">Selamat datang di {{ $application['schoolName'] }}! 👋</h4>
+                    <p class="mb-4">Silahkan masukkan Email dan Password Anda</p>
 
-                    <form id="formAuthentication" class="mb-3" action="#" method="GET">
+                    <form id="formAuthentication" class="mb-3" action="{{ route('login.store') }}" method="post">
+                        @csrf
                         <div class="form-floating form-floating-outline mb-3">
-                            <input
-                                    type="text"
-                                    class="form-control"
-                                    id="email"
-                                    name="email-username"
-                                    placeholder="Enter your email or username"
-                                    autofocus />
-                            <label for="email">Email or Username</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Masukkan Email Anda" autofocus/>
+                            <label for="email">Email</label>
                         </div>
                         <div class="mb-3">
                             <div class="form-password-toggle">
                                 <div class="input-group input-group-merge">
                                     <div class="form-floating form-floating-outline">
-                                        <input
-                                                type="password"
-                                                id="password"
-                                                class="form-control"
-                                                name="password"
-                                                placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                                aria-describedby="password" />
-                                        <label for="password">Password</label>
+                                        <input type="password" id="password" class="form-control" name="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password"/>
+                                        <label for="password">Kata Sandi</label>
                                     </div>
                                     <span class="input-group-text cursor-pointer"><i class="mdi mdi-eye-off-outline"></i></span>
                                 </div>
                             </div>
                         </div>
+                        @include('layouts.session')
                         <div class="mb-3">
-                            <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
+                            <button class="btn btn-primary d-grid w-100" type="submit">Masuk</button>
                         </div>
                     </form>
 
                     <div class="divider my-4">
-                        <div class="divider-text">or</div>
+                        <div class="divider-text">atau</div>
                     </div>
 
                     <div class="d-flex justify-content-center gap-2">
@@ -127,11 +117,13 @@
         </div>
     </div>
 </div>
+@include('layouts.flash')
 
 <!-- / Content -->
 
 <!-- Core JS -->
 <!-- build:js assets/vendor/js/core.js -->
 @include('layouts.script')
+<script src="{{ asset('js/auth/login-validation.js') }}"></script>
 </body>
 </html>

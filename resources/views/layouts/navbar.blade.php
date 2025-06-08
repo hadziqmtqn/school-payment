@@ -1,7 +1,9 @@
-<nav class="layout-navbar navbar navbar-expand-xl align-items-center bg-navbar-theme" id="layout-navbar">
+@php use Carbon\Carbon; @endphp
+<nav class="layout-navbar navbar navbar-expand-xl align-items-center bg-navbar-theme"
+     id="layout-navbar">
     <div class="container-xxl">
         <div class="navbar-brand app-brand demo d-none d-xl-flex py-0 me-4">
-            <a href="{{ route('home') }}" class="app-brand-link gap-2" target="_blank">
+            <a href="/" class="app-brand-link gap-2" target="_blank">
                 <span class="app-brand-logo demo">
                     <img src="{{ $application['logo'] }}" alt="logo" style="width: 40px">
                 </span>
@@ -55,7 +57,7 @@
                 <li class="nav-item navbar-dropdown dropdown-user dropdown">
                     <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                         <div class="avatar avatar-online">
-                            <img src="{{ $myAccount['photo'] }}" alt class="w-px-40 h-auto rounded-circle" />
+                            <img src="{{ Auth::user()->hasMedia('photo') ? Auth::user()->getFirstTemporaryUrl(Carbon::now()->addMinutes(5), 'photo') : url('https://ui-avatars.com/api/?name='. Auth::user()->name .'&color=7F9CF5&background=EBF4FF') }}" alt class="w-px-40 h-auto rounded-circle"/>
                         </div>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
@@ -64,12 +66,12 @@
                                 <div class="d-flex">
                                     <div class="flex-shrink-0 me-3">
                                         <div class="avatar avatar-online">
-                                            <img src="{{ $myAccount['photo'] }}" alt class="w-px-40 h-auto rounded-circle" />
+                                            <img src="{{ Auth::user()->hasMedia('photo') ? Auth::user()->getFirstTemporaryUrl(Carbon::now()->addMinutes(5), 'photo') : url('https://ui-avatars.com/api/?name='. Auth::user()->name .'&color=7F9CF5&background=EBF4FF') }}" alt class="w-px-40 h-auto rounded-circle"/>
                                         </div>
                                     </div>
                                     <div class="flex-grow-1">
-                                        <span class="fw-medium d-block">{{ $myAccount['name'] }}</span>
-                                        <small class="text-muted">{{ $myAccount['role'] }}</small>
+                                        <span class="fw-medium d-block">{{ Auth::user()->name }}</span>
+                                        <small class="text-muted">{{ ucfirst(str_replace('_', ' ', Auth::user()->roles->first()->name)) }}</small>
                                     </div>
                                 </div>
                             </a>
@@ -103,7 +105,7 @@
 
         <!-- Search Small Screens -->
         <div class="navbar-search-wrapper search-input-wrapper container-xxl d-none">
-            <input type="text" class="form-control search-input border-0" placeholder="Search..." aria-label="Search..." />
+            <input type="text" class="form-control search-input border-0" placeholder="Search..." aria-label="Search..."/>
             <i class="mdi mdi-close search-toggler cursor-pointer"></i>
         </div>
     </div>
