@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Dashboard\AdminDashboardController;
 use App\Http\Controllers\Dashboard\Setting\AccountController;
 use App\Http\Controllers\Dashboard\Setting\MenuController;
+use App\Http\Controllers\Dashboard\Setting\PermissionController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -24,9 +25,17 @@ Route::middleware('auth')->group(function () {
     // TODO Settings
     Route::prefix('menu')->group(function () {
         Route::get('/', [MenuController::class, 'index'])->name('menu.index');
+        Route::post('/datatable', [MenuController::class, 'datatable']);
+        Route::post('/store', [MenuController::class, 'store'])->name('menu.store');
+        Route::get('/{menu:slug}/show', [MenuController::class, 'show'])->name('menu.show');
+        Route::put('/{menu:slug}/update', [MenuController::class, 'update'])->name('menu.update');
+        Route::delete('/{menu:slug}/delete', [MenuController::class, 'destroy']);
     });
 
+    // TODO Select
     Route::get('search-menu', [MenuController::class, 'searchMenu']);
+    Route::get('select-main-menu', [MenuController::class, 'select']);
+    Route::get('/select-permission', [PermissionController::class, 'select']);
 
     // TODO Auth
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

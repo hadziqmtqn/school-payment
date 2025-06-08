@@ -9,12 +9,12 @@ class MenuRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'slug' => ['required'],
-            'serial_number' => ['required', 'integer'],
+            'serial_number' => ['required', 'string'],
             'name' => ['required'],
-            'type' => ['required'],
-            'main_menu' => ['nullable'],
-            'visibility' => ['nullable'],
+            'type' => ['required', 'in:"main_menu","sub_menu"'],
+            'main_menu' => ['required_if:type,"sub_menu"', 'nullable'],
+            'visibility' => ['nullable', 'array'],
+            'visibility.*' => ['nullable', 'exists:permissions,name'],
             'url' => ['required'],
             'icon' => ['nullable'],
         ];
@@ -23,5 +23,19 @@ class MenuRequest extends FormRequest
     public function authorize(): bool
     {
         return true;
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'serial_number' => 'no. urut',
+            'name' => 'nama',
+            'type' => 'jenis',
+            'main_menu' => 'menu utama',
+            'visibility' => 'hak akses',
+            'visibility.*' => 'hak akses',
+            'url' => 'url',
+            'icon' => 'ikon',
+        ];
     }
 }
