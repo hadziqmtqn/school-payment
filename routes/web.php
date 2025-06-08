@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Dashboard\AdminDashboardController;
 use App\Http\Controllers\Dashboard\Setting\AccountController;
+use App\Http\Controllers\Dashboard\Setting\ApplicationController;
 use App\Http\Controllers\Dashboard\Setting\MenuController;
 use App\Http\Controllers\Dashboard\Setting\PermissionController;
 use Illuminate\Support\Facades\Route;
@@ -30,6 +31,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/{menu:slug}/show', [MenuController::class, 'show'])->name('menu.show');
         Route::put('/{menu:slug}/update', [MenuController::class, 'update'])->name('menu.update');
         Route::delete('/{menu:slug}/delete', [MenuController::class, 'destroy']);
+    });
+
+    Route::prefix('application')->group(function () {
+        Route::get('/', [ApplicationController::class, 'index'])->name('application.index');
+        Route::post('/store', [ApplicationController::class, 'store'])->name('application.store');
     });
 
     // TODO Select

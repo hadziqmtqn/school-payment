@@ -13,14 +13,18 @@ document.addEventListener('DOMContentLoaded', function (e) {
                             },
                         }
                     },
-                    email: {
+                    school_name: {
                         validators: {
                             notEmpty: {
                                 message: 'Kolom ini wajib diisi'
                             },
-                            emailAddress: {
-                                message: 'Harap masukkan email valid'
-                            }
+                        }
+                    },
+                    notification_method: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Kolom ini wajib diisi'
+                            },
                         }
                     },
                 },

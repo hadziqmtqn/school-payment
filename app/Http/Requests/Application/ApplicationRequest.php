@@ -9,14 +9,24 @@ class ApplicationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'slug' => ['required'],
             'name' => ['required'],
-            'notification_method' => ['required'],
+            'school_name' => ['required'],
+            'notification_method' => ['required', 'in:whatsapp,email'],
+            'logo' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:500']
         ];
     }
 
     public function authorize(): bool
     {
         return true;
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'name' => 'nama aplikasi',
+            'school_name' => 'nama sekolah',
+            'notification_method' => 'metode notifikasi'
+        ];
     }
 }
