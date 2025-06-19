@@ -8,6 +8,7 @@ use App\Http\Controllers\Dashboard\Setting\ApplicationController;
 use App\Http\Controllers\Dashboard\Setting\MenuController;
 use App\Http\Controllers\Dashboard\Setting\PermissionController;
 use App\Http\Controllers\Dashboard\Setting\RoleController;
+use App\Http\Controllers\Dashboard\Setting\WhatsappApiConfigController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -56,6 +57,11 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{user:username}/delete', [AdminController::class, 'destroy']);
         Route::post('/{user:username}/restore', [AdminController::class, 'restore']);
         Route::delete('/{user:username}/force-delete', [AdminController::class, 'forceDelete']);
+    });
+
+    Route::prefix('whatsapp-api-config')->group(function () {
+        Route::get('/', [WhatsappApiConfigController::class, 'index'])->name('whatsapp-api-config.index');
+        Route::post('/store', [WhatsappApiConfigController::class, 'store'])->name('whatsapp-api-config.store');
     });
 
     // TODO Select

@@ -53,8 +53,8 @@
                         </div>
                         <small class="fst-italic text-danger">Abaikan jika tidak ingin mengubah kata sandi</small>
                     </div>
-                    @include('layouts.session')
                 </div>
+                @include('layouts.session')
                 <div class="mt-4">
                     <button type="submit" class="btn btn-primary me-2">Simpan</button>
                     <button type="reset" class="btn btn-outline-secondary">Batal</button>

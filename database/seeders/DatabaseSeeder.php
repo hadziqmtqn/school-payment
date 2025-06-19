@@ -6,6 +6,7 @@ use Database\Seeders\Setting\AdminSeeder;
 use Database\Seeders\Setting\ApplicationSeeder;
 use Database\Seeders\Setting\MenuSeeder;
 use Database\Seeders\Setting\PermissionSeeder;
+use Database\Seeders\Setting\WhatsappApiConfigSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -19,7 +20,8 @@ class DatabaseSeeder extends Seeder
             PermissionSeeder::class,
             MenuSeeder::class,
             AdminSeeder::class,
-            ApplicationSeeder::class
+            ApplicationSeeder::class,
+            WhatsappApiConfigSeeder::class
         ]);
     }
 }

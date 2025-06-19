@@ -6,7 +6,9 @@
       "application-read",
       "role-read",
       "menu-read",
-      "admin-read"
+      "admin-read",
+      "whatsapp-api-config-read",
+      "template-message-read"
     ],
     "url": "#",
     "icon": "cog-outline",
@@ -38,6 +40,20 @@
         "visibility": ["admin-read"],
         "url": "/admin",
         "icon": "shield-account-outline"
+      },
+      {
+        "name": "Whatsapp API",
+        "type": "sub_menu",
+        "visibility": ["whatsapp-api-config-read"],
+        "url": "/whatsapp-api-config",
+        "icon": "chat-outline"
+      },
+      {
+        "name": "Template Pesan",
+        "type": "sub_menu",
+        "visibility": ["template-message-read"],
+        "url": "/template-message",
+        "icon": "message-cog-outline"
       }
     ]
   }
