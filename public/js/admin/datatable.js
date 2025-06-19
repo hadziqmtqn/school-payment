@@ -64,7 +64,7 @@ $(function () {
                 '<option value="deleted">Terhapus</option>' +
                 '</select>'
             )
-                .appendTo('.admin_status')
+                .appendTo('.filters')
                 .on('change', function () {
                     dataTable.ajax.reload(); // Reload DataTables saat filter berubah
                 });

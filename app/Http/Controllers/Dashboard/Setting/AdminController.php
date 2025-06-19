@@ -192,10 +192,10 @@ class AdminController extends Controller implements HasMiddleware
         } catch (Exception $exception) {
             DB::rollBack();
             Log::error($exception->getMessage());
-            return $this->apiResponse('Data gagal disimpan!', null, null, Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->apiResponse('Data gagal dihapus!', null, null, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
-        return $this->apiResponse('Data berhasil disimpan!', null, null, Response::HTTP_OK);
+        return $this->apiResponse('Data berhasil dihapus!', null, null, Response::HTTP_OK);
     }
 
     public function restore($username): JsonResponse

@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->boolean('mark_as_contact')->default(false);
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->restrictOnDelete();
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
         });
     }
 
