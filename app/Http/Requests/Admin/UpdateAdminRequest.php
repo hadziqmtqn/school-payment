@@ -10,12 +10,12 @@ class UpdateAdminRequest extends FormRequest
     {
         return [
             'name' => ['required'],
-            'email' => ['required', 'email', 'unique:users,email'],
-            'password' => ['required', 'confirmed', 'min:8', 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/'],
+            'email' => ['required', 'email', 'unique:users,email,' . $this->route('user')->username . ',username'],
+            'password' => ['nullable', 'confirmed', 'min:8', 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/'],
             'whatsapp_number' => ['required', 'min_digits:10', 'max_digits:13'],
             'mark_as_contact' => ['required', 'boolean'],
             'photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:500'],
-            'is_active' => ['required', 'boolean']
+            'is_active' => ['boolean']
         ];
     }
 

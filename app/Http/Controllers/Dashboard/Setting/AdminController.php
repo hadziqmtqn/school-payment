@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard\Setting;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AdminRequest;
+use App\Http\Requests\Admin\UpdateAdminRequest;
 use App\Models\Admin;
 use App\Models\User;
 use App\Traits\ApiResponse;
@@ -13,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
@@ -132,6 +134,8 @@ class AdminController extends Controller implements HasMiddleware
 
     public function show(User $user): View
     {
+        Gate::authorize('show', $user);
+
         $title = 'Admin';
         $subTitle = 'Detail Admin';
         $user->load('admin');
@@ -142,8 +146,10 @@ class AdminController extends Controller implements HasMiddleware
     /**
      * @throws Throwable
      */
-    public function update(AdminRequest $request, User $user): RedirectResponse
+    public function update(UpdateAdminRequest $request, User $user): RedirectResponse
     {
+        Gate::authorize('update', $user);
+
         try {
             $user->load('admin');
 
@@ -151,6 +157,7 @@ class AdminController extends Controller implements HasMiddleware
             $user->name = $request->input('name');
             $user->email = $request->input('email');
             $user->password = $request->input('password') ? Hash::make($request->input('password')) : $user->password;
+            $user->is_active = $user->hasRole('admin') ? $request->input('is_active') : true;
             $user->save();
 
             $admin = $user->admin;
@@ -173,6 +180,8 @@ class AdminController extends Controller implements HasMiddleware
      */
     public function destroy(User $user): JsonResponse
     {
+        Gate::authorize('destroy', $user);
+
         try {
             DB::beginTransaction();
             $user->is_active = false;
