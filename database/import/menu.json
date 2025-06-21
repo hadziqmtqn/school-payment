@@ -1,5 +1,23 @@
 [
   {
+    "name": "Referensi",
+    "type": "main_menu",
+    "visibility": [
+      "school-year-read"
+    ],
+    "url": "#",
+    "icon": "tag-text-outline",
+    "sub_menu": [
+      {
+        "name": "Tahun Ajaran",
+        "type": "sub_menu",
+        "visibility": ["school-year-read"],
+        "url": "/school-year",
+        "icon": "calendar-multiselect-outline"
+      }
+    ]
+  },
+  {
     "name": "Pengaturan",
     "type": "main_menu",
     "visibility": [
