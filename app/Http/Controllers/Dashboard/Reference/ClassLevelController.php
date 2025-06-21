@@ -53,7 +53,7 @@ class ClassLevelController extends Controller implements HasMiddleware
                         $search = $request->get('search');
 
                         $instance->when($search, function ($query) use ($search) {
-                            $query->whereAny(['serial_numberr', 'name'], 'LIKE', '%' . $search . '%');
+                            $query->whereAny(['serial_number', 'name'], 'LIKE', '%' . $search . '%');
                         });
                     })
                     ->addColumn('is_active', function ($row) {

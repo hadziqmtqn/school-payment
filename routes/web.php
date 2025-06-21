@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Dashboard\AdminDashboardController;
 use App\Http\Controllers\Dashboard\Reference\ClassLevelController;
 use App\Http\Controllers\Dashboard\Reference\SchoolYearController;
+use App\Http\Controllers\Dashboard\Reference\SubClassLevelController;
 use App\Http\Controllers\Dashboard\Setting\AccountController;
 use App\Http\Controllers\Dashboard\Setting\AdminController;
 use App\Http\Controllers\Dashboard\Setting\ApplicationController;
@@ -80,6 +81,13 @@ Route::middleware('auth')->group(function () {
         Route::post('/store', [ClassLevelController::class, 'store'])->name('class-level.store');
         Route::put('/{classLevel:slug}/update', [ClassLevelController::class, 'update']);
         Route::delete('/{classLevel:slug}/delete', [ClassLevelController::class, 'destroy']);
+    });
+
+    Route::prefix('sub-class-level')->group(function () {
+        Route::post('/datatable', [SubClassLevelController::class, 'datatable']);
+        Route::post('/store', [SubClassLevelController::class, 'store'])->name('sub-class-level.store');
+        Route::put('/{subClassLevel:slug}/update', [SubClassLevelController::class, 'update']);
+        Route::delete('/{subClassLevel:slug}/delete', [SubClassLevelController::class, 'destroy']);
     });
 
     // TODO Select

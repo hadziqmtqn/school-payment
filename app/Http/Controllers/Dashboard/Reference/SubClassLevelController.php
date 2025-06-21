@@ -5,35 +5,99 @@ namespace App\Http\Controllers\Dashboard\Reference;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ClassLevel\SubClassLevelRequest;
 use App\Models\SubClassLevel;
+use App\Traits\ApiResponse;
+use Exception;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Log;
+use Spatie\Permission\Middleware\PermissionMiddleware;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Yajra\DataTables\Facades\DataTables;
 
-class SubClassLevelController extends Controller
+class SubClassLevelController extends Controller implements HasMiddleware
 {
-    public function index()
+    use ApiResponse;
+
+    public static function middleware(): array
     {
-        return SubClassLevel::all();
+        // TODO: Implement middleware() method.
+        return [
+            new Middleware(PermissionMiddleware::using('sub-class-level-write'), only: ['store', 'update']),
+            new Middleware(PermissionMiddleware::using('sub-class-level-delete'), only: ['destroy']),
+        ];
     }
 
-    public function store(SubClassLevelRequest $request)
+    public function datatable(Request $request): \Illuminate\Http\JsonResponse
     {
-        return SubClassLevel::create($request->validated());
+        try {
+            if ($request->ajax()) {
+                $data = SubClassLevel::query()
+                    ->orderByDesc('created_at');
+
+                return DataTables::eloquent($data)
+                    ->addIndexColumn()
+                    ->filter(function ($instance) use ($request) {
+                        $search = $request->get('search');
+
+                        $instance->when($search, function ($query) use ($search) {
+                            $query->whereAny(['name'], 'LIKE', '%' . $search . '%');
+                        });
+                    })
+                    ->addColumn('action', function ($row) {
+                        $btn = '<button type="button" data-slug="' . $row->slug . '" data-name="' . $row->name . '" data-active="' . $row->is_active . '" class="btn btn-icon btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#modalEditSubClassLevel"><i class="mdi mdi-pencil"></i></button> ';
+                        $btn .= '<button type="button" data-slug="' . $row->slug . '" class="delete btn btn-icon btn-sm btn-danger"><i class="mdi mdi-trash-can-outline"></i></button>';
+
+                        return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make();
+            }
+        }catch (Exception $exception) {
+            Log::error($exception->getMessage());
+        }
+
+        return response()->json(true);
     }
 
-    public function show(SubClassLevel $subClassLevel)
+    public function store(SubClassLevelRequest $request): RedirectResponse
     {
-        return $subClassLevel;
+        try {
+            $subClassLevel = new SubClassLevel();
+            $subClassLevel->name = $request->input('name');
+            $subClassLevel->save();
+        } catch (Exception $exception) {
+            Log::error($exception->getMessage());
+            return redirect()->back()->with('error', 'Data gagal disimpan!');
+        }
+
+        return redirect()->back()->with('success', 'Data berhasil disimpan!');
     }
 
-    public function update(SubClassLevelRequest $request, SubClassLevel $subClassLevel)
+    public function update(SubClassLevelRequest $request, SubClassLevel $subClassLevel): JsonResponse
     {
-        $subClassLevel->update($request->validated());
+        try {
+            $subClassLevel->name = $request->input('name');
+            $subClassLevel->save();
+        } catch (Exception $exception) {
+            Log::error($exception->getMessage());
+            return $this->apiResponse('Data gagal disimpan!', null, null, Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
 
-        return $subClassLevel;
+        return $this->apiResponse('Data berhasil disimpan!', null, null, Response::HTTP_OK);
     }
 
-    public function destroy(SubClassLevel $subClassLevel)
+    public function destroy(SubClassLevel $subClassLevel): JsonResponse
     {
-        $subClassLevel->delete();
+        try {
+            $subClassLevel->delete();
+        } catch (Exception $exception) {
+            Log::error($exception->getMessage());
+            return $this->apiResponse('Data gagal dihapus!', null, null, Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
 
-        return response()->json();
+        return $this->apiResponse('Data berhasil dihapus!', null, null, Response::HTTP_OK);
     }
 }
