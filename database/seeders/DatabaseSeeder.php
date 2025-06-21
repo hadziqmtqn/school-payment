@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Database\Seeders\References\ClassLevelSeeder;
 use Database\Seeders\References\SchoolYearSeeder;
 use Database\Seeders\Setting\AdminSeeder;
 use Database\Seeders\Setting\ApplicationSeeder;
@@ -23,7 +24,8 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             ApplicationSeeder::class,
             WhatsappApiConfigSeeder::class,
-            SchoolYearSeeder::class
+            SchoolYearSeeder::class,
+            ClassLevelSeeder::class
         ]);
     }
 }

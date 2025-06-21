@@ -3,7 +3,8 @@
     "name": "Referensi",
     "type": "main_menu",
     "visibility": [
-      "school-year-read"
+      "school-year-read",
+      "class-level-read"
     ],
     "url": "#",
     "icon": "tag-text-outline",
@@ -14,6 +15,13 @@
         "visibility": ["school-year-read"],
         "url": "/school-year",
         "icon": "calendar-multiselect-outline"
+      },
+      {
+        "name": "Level Kelas",
+        "type": "sub_menu",
+        "visibility": ["class-level-read"],
+        "url": "/class-level",
+        "icon": "chart-multiline"
       }
     ]
   },

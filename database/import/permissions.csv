@@ -7,3 +7,7 @@ admin-write
 admin-delete
 whatsapp-api-config-write
 school-year-write
+class-level-write
+class-level-delete
+sub-class-level-write
+sub-class-level-delete
