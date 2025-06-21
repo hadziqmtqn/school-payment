@@ -34,12 +34,16 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="form-floating form-floating-outline mb-3">
-                            <select name="mark_as_contact" id="mark_as_contact" class="form-select select2">
-                                <option value="1" @selected($user->admin?->mark_as_contact == 1)>Ya</option>
-                                <option value="0" @selected($user->admin?->mark_as_contact == 0)>Bukan</option>
-                            </select>
-                            <label for="mark_as_contact">Tandai Sebagai Kontak Utama</label>
+                        <div class="mb-2">Jadikan Kontak Utama</div>
+                        <div class="mb-3">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="mark_as_contact" id="yes" value="1" @checked($user->admin?->mark_as_contact)>
+                                <label class="form-check-label" for="yes">Ya</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="mark_as_contact" id="no" value="0" @checked(!$user->admin?->mark_as_contact)>
+                                <label class="form-check-label" for="no">Bukan</label>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-6">

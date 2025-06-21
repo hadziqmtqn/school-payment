@@ -52,7 +52,7 @@ class SchoolYear extends Model
 
     protected function year(): Attribute
     {
-        return Attribute::make(fn() => "$this->first_year "/" $this->last_year");
+        return Attribute::make(fn() => $this->first_year . '/' . $this->last_year);
     }
 
     // TODO Scope

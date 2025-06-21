@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders\Setting;
+namespace Database\Seeders\References;
 
 use App\Models\SchoolYear;
 use Illuminate\Database\Seeder;

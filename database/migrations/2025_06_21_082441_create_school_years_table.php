@@ -10,8 +10,8 @@ return new class extends Migration {
         Schema::create('school_years', function (Blueprint $table) {
             $table->id();
             $table->uuid('slug');
-            $table->year('first_year');
-            $table->year('last_year');
+            $table->year('first_year')->unique();
+            $table->year('last_year')->unique();
             $table->boolean('is_active')->default(false);
             $table->timestamps();
         });

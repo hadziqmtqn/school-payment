@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Dashboard\AdminDashboardController;
+use App\Http\Controllers\Dashboard\Reference\SchoolYearController;
 use App\Http\Controllers\Dashboard\Setting\AccountController;
 use App\Http\Controllers\Dashboard\Setting\AdminController;
 use App\Http\Controllers\Dashboard\Setting\ApplicationController;
@@ -62,6 +63,14 @@ Route::middleware('auth')->group(function () {
     Route::prefix('whatsapp-api-config')->group(function () {
         Route::get('/', [WhatsappApiConfigController::class, 'index'])->name('whatsapp-api-config.index');
         Route::post('/store', [WhatsappApiConfigController::class, 'store'])->name('whatsapp-api-config.store');
+    });
+
+    // TODO References
+    Route::prefix('school-year')->group(function () {
+        Route::get('/', [SchoolYearController::class, 'index'])->name('school-year.index');
+        Route::post('/datatable', [SchoolYearController::class, 'datatable']);
+        Route::post('/store', [SchoolYearController::class, 'store'])->name('school-year.store');
+        Route::put('/{schoolYear:slug}/update', [SchoolYearController::class, 'update']);
     });
 
     // TODO Select
