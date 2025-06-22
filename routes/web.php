@@ -9,6 +9,7 @@ use App\Http\Controllers\Dashboard\Setting\AccountController;
 use App\Http\Controllers\Dashboard\Setting\AdminController;
 use App\Http\Controllers\Dashboard\Setting\ApplicationController;
 use App\Http\Controllers\Dashboard\Setting\MenuController;
+use App\Http\Controllers\Dashboard\Setting\MessageTemplateController;
 use App\Http\Controllers\Dashboard\Setting\PermissionController;
 use App\Http\Controllers\Dashboard\Setting\RoleController;
 use App\Http\Controllers\Dashboard\Setting\WhatsappApiConfigController;
@@ -65,6 +66,14 @@ Route::middleware('auth')->group(function () {
     Route::prefix('whatsapp-api-config')->group(function () {
         Route::get('/', [WhatsappApiConfigController::class, 'index'])->name('whatsapp-api-config.index');
         Route::post('/store', [WhatsappApiConfigController::class, 'store'])->name('whatsapp-api-config.store');
+    });
+
+    Route::prefix('message-template')->group(function () {
+        Route::get('/', [MessageTemplateController::class, 'index'])->name('message-template.index');
+        Route::post('/store', [MessageTemplateController::class, 'store'])->name('message-template.store');
+        Route::get('/{messageTemplate:slug}', [MessageTemplateController::class, 'show'])->name('message-template.show');
+        Route::put('/{messageTemplate:slug}/update', [MessageTemplateController::class, 'update'])->name('message-template.update');
+        Route::delete('/{messageTemplate:slug}/delete', [MessageTemplateController::class, 'destroy'])->name('message-template.destroy');
     });
 
     // TODO References
