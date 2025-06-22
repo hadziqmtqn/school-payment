@@ -20,4 +20,14 @@ class MessageTemplateRequest extends FormRequest
     {
         return true;
     }
+
+    public function attributes(): array
+    {
+        return [
+            'category' => 'kategori',
+            'recipient' => 'penerima',
+            'title' => 'judul',
+            'message' => 'pesan'
+        ];
+    }
 }
