@@ -1,5 +1,13 @@
 [
   {
+    "name": "Siswa",
+    "type": "main_menu",
+    "visibility": ["student-read"],
+    "url": "/student",
+    "icon": "account-tie-outline",
+    "sub_menu": null
+  },
+  {
     "name": "Referensi",
     "type": "main_menu",
     "visibility": [

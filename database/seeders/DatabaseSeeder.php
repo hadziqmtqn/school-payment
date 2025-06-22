@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\StudentLevel;
 use Database\Seeders\References\ClassLevelSeeder;
 use Database\Seeders\References\SchoolYearSeeder;
 use Database\Seeders\Setting\AdminSeeder;
@@ -27,5 +28,8 @@ class DatabaseSeeder extends Seeder
             SchoolYearSeeder::class,
             ClassLevelSeeder::class
         ]);
+
+        StudentLevel::factory(100)
+            ->create();
     }
 }

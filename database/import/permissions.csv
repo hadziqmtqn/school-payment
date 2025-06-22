@@ -11,3 +11,5 @@ class-level-write
 class-level-delete
 sub-class-level-write
 sub-class-level-delete
+student-write
+student-delete
