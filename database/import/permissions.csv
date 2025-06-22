@@ -13,3 +13,5 @@ sub-class-level-write
 sub-class-level-delete
 student-write
 student-delete
+message-template-write
+message-template-delete

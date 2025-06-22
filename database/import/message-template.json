@@ -1,0 +1,8 @@
+[
+  {
+    "category": "registrasi-akun-baru",
+    "recipient": "siswa",
+    "title": "Registrasi Akun Siswa",
+    "message": "Assalamu`alaikum Wr. Wb.\n\nBerikut ini informasi Akun Login {nama_aplikasi} Anda:\n\n*Nama* : {nama_siswa}\n*Kelas* : {kelas}\n*Sub Kelas* : {sub_kelas}\n*Email* : {email}\n*Password* : {password}\n\nHarap jaga informasi penting ini dan tidak memberikannya kepada siapapun!\n\n*PESAN INI TIDAK UNTUK DIBALAS*"
+  }
+]

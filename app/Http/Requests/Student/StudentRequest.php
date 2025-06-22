@@ -9,13 +9,12 @@ class StudentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'slug' => ['required'],
-            'user_id' => ['required', 'integer'],
-            'school_year_id' => ['required', 'integer'],
+            'name' => ['required', 'string', 'min:3'],
+            'email' => ['required', 'email', 'unique:users,email'],
+            'password' => ['required', 'string', 'min:8'],
+            'password_confirmation' => ['required', 'same:password'],
             'class_level_id' => ['required', 'integer'],
             'sub_class_level_id' => ['required', 'integer'],
-            'is_active' => ['boolean'],
-            'is_graduate' => ['nullable', 'boolean'],
         ];
     }
 

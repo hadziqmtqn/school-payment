@@ -42,7 +42,7 @@
       "menu-read",
       "admin-read",
       "whatsapp-api-config-read",
-      "template-message-read"
+      "message-template-read"
     ],
     "url": "#",
     "icon": "cog-outline",
@@ -85,8 +85,8 @@
       {
         "name": "Template Pesan",
         "type": "sub_menu",
-        "visibility": ["template-message-read"],
-        "url": "/template-message",
+        "visibility": ["message-template-read"],
+        "url": "/message-template",
         "icon": "message-cog-outline"
       }
     ]
