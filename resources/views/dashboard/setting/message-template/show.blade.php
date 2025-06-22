@@ -1,8 +1,28 @@
 @extends('layouts.master')
 @section('content')
-    <h4 class="py-3 mb-4"><span class="text-muted fw-light"><a href="{{ route('dashboard') }}">Dashboard</a> /</span> {{ $title }}</h4>
+    <h4 class="py-3 mb-4">
+        <span class="text-muted fw-light"><a href="{{ route('dashboard') }}">Dashboard</a> /</span>
+        <span class="text-muted fw-light"><a href="{{ route('message-template.index') }}">{{ $title }}</a> /</span>
+        {{ $subTitle }}
+    </h4>
     <div class="card mb-4">
-        <h5 class="card-header">{{ $title }}</h5>
+        <div class="card-header pb-1">
+            <div class="d-flex justify-content-between">
+                <h5 class="mb-1">{{ $subTitle }}</h5>
+                <div class="dropdown">
+                    <button class="btn p-0" type="button" id="organicSessionsDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="mdi mdi-dots-vertical mdi-24px"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="organicSessionsDropdown" style="">
+                        <form action="{{ route('message-template.destroy', $messageTemplate->slug) }}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-danger dropdown-item waves-effect">Hapus</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-4">
@@ -14,6 +34,7 @@
                         @method('PUT')
                         <div class="form-floating form-floating-outline mb-3">
                             <select class="form-select select2" name="category" id="category">
+                                <option value=""></option>
                                 @foreach($categories as $category)
                                     <option value="{{ $category }}" @selected($messageTemplate->category == $category)>{{ Str::title(str_replace('-', ' ', $category)) }}</option>
                                 @endforeach

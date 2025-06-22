@@ -27,7 +27,7 @@ class MessageTemplateController extends Controller implements HasMiddleware
 
     private function categories()
     {
-        return ['registrasi-akun-baru'];
+        return ['registrasi-akun-baru', 'tagihan-bulanan'];
     }
 
     public function index(): View
@@ -39,9 +39,21 @@ class MessageTemplateController extends Controller implements HasMiddleware
         return \view('dashboard.setting.message-template.index', compact('title', 'messageTemplates', 'categories'));
     }
 
-    public function store(MessageTemplateRequest $request)
+    public function store(MessageTemplateRequest $request): RedirectResponse
     {
-        return MessageTemplate::create($request->validated());
+        try {
+            $messageTemplate = new MessageTemplate();
+            $messageTemplate->category = $request->input('category');
+            $messageTemplate->recipient = $request->input('recipient');
+            $messageTemplate->title = $request->input('title');
+            $messageTemplate->message = $request->input('message');
+            $messageTemplate->save();
+        } catch (Exception $exception) {
+            Log::error($exception->getMessage());
+            return redirect()->back()->with('error', 'Data gagal disimpan!');
+        }
+
+        return redirect()->back()->with('success', 'Data berhasil disimpan!');
     }
 
     public function show(MessageTemplate $messageTemplate): View
@@ -70,10 +82,15 @@ class MessageTemplateController extends Controller implements HasMiddleware
         return redirect()->back()->with('success', 'Data berhasil disimpan!');
     }
 
-    public function destroy(MessageTemplate $messageTemplate)
+    public function destroy(MessageTemplate $messageTemplate): RedirectResponse
     {
-        $messageTemplate->delete();
+        try {
+            $messageTemplate->delete();
+        } catch (Exception $exception) {
+            Log::error($exception->getMessage());
+            return redirect()->back()->with('error', 'Data gagal disimpan!');
+        }
 
-        return response()->json();
+        return to_route('message-template.index')->with('success', 'Data berhasil dihapus!');
     }
 }
