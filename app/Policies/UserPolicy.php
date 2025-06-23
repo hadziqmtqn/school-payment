@@ -23,4 +23,13 @@ class UserPolicy
     {
         return !$user->hasRole('user') && $model->admin;
     }
+
+    public function student(User $user, User $model): bool
+    {
+        $student = $model->student;
+
+        if ($user->hasRole('user')) return $user->id === $model->id && $student;
+
+        return $student;
+    }
 }

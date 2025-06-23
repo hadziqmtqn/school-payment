@@ -15,6 +15,7 @@ class StudentFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
+            'reg_number' => $this->faker->numerify('###############'),
             'whatsapp_number' => $this->faker->regexify('08[2-9]{10}'),
             'gender' => $this->faker->randomElement(['L','P']),
             'created_at' => Carbon::now(),

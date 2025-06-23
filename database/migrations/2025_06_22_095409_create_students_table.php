@@ -11,6 +11,7 @@ return new class extends Migration {
             $table->id();
             $table->uuid('slug');
             $table->unsignedBigInteger('user_id')->unique();
+            $table->string('reg_number')->unique();
             $table->string('whatsapp_number')->unique();
             $table->enum('gender', ['L', 'P']);
             $table->timestamps();

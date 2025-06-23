@@ -39,5 +39,10 @@ class AdminSeeder extends Seeder
             'slug' => Str::uuid()->toString(),
             'name' => 'admin'
         ]);
+
+        Role::create([
+            'slug' => Str::uuid()->toString(),
+            'name' => 'student'
+        ]);
     }
 }

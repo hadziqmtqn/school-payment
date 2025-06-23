@@ -91,6 +91,10 @@ class SchoolYearController extends Controller implements HasMiddleware
     public function update(UpdateSchoolYearRequest $request, SchoolYear $schoolYear): JsonResponse
     {
         try {
+            if ($schoolYear->is_active && $request->input('is_active') == 0) {
+                return $this->apiResponse('Tidak bisa mengubah menjadi tidak aktif', null, null, Response::HTTP_BAD_REQUEST);
+            }
+
             $schoolYear->first_year = $request->input('first_year');
             $schoolYear->last_year = $request->input('last_year');
             $schoolYear->is_active = $request->input('is_active');

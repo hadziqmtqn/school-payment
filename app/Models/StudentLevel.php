@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 
 class StudentLevel extends Model
@@ -36,5 +39,39 @@ class StudentLevel extends Model
         static::creating(function (StudentLevel $student) {
             $student->slug = Str::uuid()->toString();
         });
+    }
+
+    public function classLevel(): BelongsTo
+    {
+        return $this->belongsTo(ClassLevel::class);
+    }
+
+    public function subClassLevel(): BelongsTo
+    {
+        return $this->belongsTo(SubClassLevel::class);
+    }
+
+    // TODO Scope
+    #[Scope]
+    protected function schoolYearId(Builder $query, $schoolYearId): Builder
+    {
+        return $query->where('school_year_id', $schoolYearId);
+    }
+
+    #[Scope]
+    protected function filterData(Builder $query, $request): Builder
+    {
+        $classLevelId = $request['class_level_id'] ?? null;
+        $subClassLevelId = $request['sub_class_level_id'] ?? null;
+        $isGraduate = $request['is_graduate'] ?? null;
+
+        $query->when($classLevelId, fn($query) => $query->where('class_level_id', $classLevelId));
+        $query->when($subClassLevelId, fn($query) => $query->where('sub_class_level_id', $subClassLevelId));
+        $query->when($isGraduate, function ($query) use ($isGraduate) {
+            $query->whereNotNull('is_graduate')
+                ->where('is_graduate', ($isGraduate == 'yes'));
+        });
+
+        return $query;
     }
 }

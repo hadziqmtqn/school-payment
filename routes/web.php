@@ -13,6 +13,7 @@ use App\Http\Controllers\Dashboard\Setting\MessageTemplateController;
 use App\Http\Controllers\Dashboard\Setting\PermissionController;
 use App\Http\Controllers\Dashboard\Setting\RoleController;
 use App\Http\Controllers\Dashboard\Setting\WhatsappApiConfigController;
+use App\Http\Controllers\Dashboard\Student\StudentController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -28,6 +29,13 @@ Route::middleware('auth')->group(function () {
     Route::prefix('account')->group(function () {
         Route::get('/', [AccountController::class, 'index'])->name('account.index');
         Route::post('/store', [AccountController::class, 'store'])->name('account.store');
+    });
+
+    Route::prefix('student')->group(function () {
+        Route::get('/', [StudentController::class, 'index'])->name('student.index');
+        Route::post('/datatable', [StudentController::class, 'datatable']);
+        Route::post('/store', [StudentController::class, 'store'])->name('student.store');
+        Route::get('/{user:username}/show', [StudentController::class, 'show'])->name('student.show');
     });
 
     // TODO Settings

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Str;
 
 class Student extends Model
@@ -13,6 +14,7 @@ class Student extends Model
     protected $fillable = [
         'slug',
         'user_id',
+        'reg_number',
         'whatsapp_number',
         'gender'
     ];
@@ -30,6 +32,16 @@ class Student extends Model
 
         static::creating(function (Student $student) {
             $student->slug = Str::uuid()->toString();
+            $student->reg_number = strtoupper(str_replace(' ', '-', $student->reg_number));
         });
+
+        static::updating(function (Student $student) {
+            $student->reg_number = strtoupper(str_replace(' ', '-', $student->reg_number));
+        });
+    }
+
+    public function studentLevel(): HasOne
+    {
+        return $this->hasOne(StudentLevel::class, 'student_id');
     }
 }
