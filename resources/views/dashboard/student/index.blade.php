@@ -45,6 +45,9 @@
             </table>
         </div>
     </div>
+    @can('student-write')
+        @include('dashboard.student.modal-create')
+    @endcan
 @endsection
 
 @section('scripts')
@@ -52,4 +55,5 @@
     <script src="{{ asset('js/student/validation.js') }}"></script>
     <script src="{{ asset('js/school-year/select.js') }}"></script>
     <script src="{{ asset('js/class-level/select.js') }}"></script>
+    <script src="{{ asset('js/student/create-method.js') }}"></script>
 @endsection
