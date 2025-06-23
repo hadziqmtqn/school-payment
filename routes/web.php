@@ -110,7 +110,10 @@ Route::middleware('auth')->group(function () {
     // TODO Select
     Route::get('search-menu', [MenuController::class, 'searchMenu']);
     Route::get('select-main-menu', [MenuController::class, 'select']);
-    Route::get('/select-permission', [PermissionController::class, 'select']);
+    Route::get('select-permission', [PermissionController::class, 'select']);
+    Route::get('select-school-year', [SchoolYearController::class, 'select']);
+    Route::get('select-class-level', [ClassLevelController::class, 'select']);
+    Route::get('select-sub-class-level', [SubClassLevelController::class, 'select']);
 
     // TODO Auth
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

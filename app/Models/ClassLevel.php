@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
@@ -29,5 +31,12 @@ class ClassLevel extends Model
         static::creating(function (ClassLevel $classLevel) {
             $classLevel->slug = Str::uuid()->toString();
         });
+    }
+
+    // TODO Scope
+    #[Scope]
+    protected function active(Builder $query): Builder
+    {
+        return $query->where('is_active', true);
     }
 }

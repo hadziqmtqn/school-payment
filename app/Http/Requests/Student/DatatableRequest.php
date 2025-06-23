@@ -9,7 +9,7 @@ class DatatableRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'search' => ['numeric', 'min:3'],
+            'search' => ['nullable', 'min:3'],
             'school_year_id' => ['required', 'integer', 'exists:school_years,id'],
             'class_level_id' => ['nullable', 'integer', 'exists:class_levels,id'],
             'sub_class_level_id' => ['nullable', 'integer', 'exists:sub_class_levels,id'],

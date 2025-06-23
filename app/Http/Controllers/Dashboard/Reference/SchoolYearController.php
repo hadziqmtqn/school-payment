@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SchoolYear\SchoolYearRequest;
 use App\Http\Requests\SchoolYear\UpdateSchoolYearRequest;
 use App\Models\SchoolYear;
+use App\Services\Reference\SchoolYearService;
 use App\Traits\ApiResponse;
 use Exception;
 use Illuminate\Http\RedirectResponse;
@@ -22,6 +23,16 @@ use Yajra\DataTables\Facades\DataTables;
 class SchoolYearController extends Controller implements HasMiddleware
 {
     use ApiResponse;
+
+    protected SchoolYearService $schoolYearService;
+
+    /**
+     * @param SchoolYearService $schoolYearService
+     */
+    public function __construct(SchoolYearService $schoolYearService)
+    {
+        $this->schoolYearService = $schoolYearService;
+    }
 
     public static function middleware(): array
     {
@@ -105,5 +116,11 @@ class SchoolYearController extends Controller implements HasMiddleware
         }
 
         return $this->apiResponse('Data berhasil disimpan!', null, null, Response::HTTP_OK);
+    }
+
+    // TODO Select
+    public function select()
+    {
+        return $this->schoolYearService->select();
     }
 }

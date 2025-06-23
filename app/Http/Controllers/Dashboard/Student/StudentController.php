@@ -65,7 +65,8 @@ class StudentController extends Controller implements HasMiddleware
                         $query->when($request->get('is_active') == 'deleted', function ($query) use ($request) {
                             $query->onlyTrashed();
                         });
-                    });
+                    })
+                    ->orderBy('name');
 
                 return DataTables::eloquent($data)
                     ->addIndexColumn()
@@ -76,6 +77,7 @@ class StudentController extends Controller implements HasMiddleware
                             $query->whereAny(['name', 'email'], 'LIKE', '%' . $search . '%');
                         });
                     })
+                    ->addColumn('regNumber', fn($row) => $row->student?->reg_number)
                     ->addColumn('whatsappNumber', fn($row) => $row->student?->whatsapp_number)
                     ->addColumn('classLevel', fn($row) => $row->student?->studentLevel?->classLevel?->name . ' ' . $row->student?->studentLevel?->subClassLevel?->name)
                     ->addColumn('is_active', function ($row) {

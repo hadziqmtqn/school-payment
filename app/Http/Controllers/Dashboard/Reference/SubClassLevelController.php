@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard\Reference;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ClassLevel\SubClassLevelRequest;
 use App\Models\SubClassLevel;
+use App\Services\Reference\ClassLevelService;
 use App\Traits\ApiResponse;
 use Exception;
 use Illuminate\Http\RedirectResponse;
@@ -20,6 +21,16 @@ use Yajra\DataTables\Facades\DataTables;
 class SubClassLevelController extends Controller implements HasMiddleware
 {
     use ApiResponse;
+
+    protected ClassLevelService $classLevelService;
+
+    /**
+     * @param ClassLevelService $classLevelService
+     */
+    public function __construct(ClassLevelService $classLevelService)
+    {
+        $this->classLevelService = $classLevelService;
+    }
 
     public static function middleware(): array
     {
@@ -99,5 +110,10 @@ class SubClassLevelController extends Controller implements HasMiddleware
         }
 
         return $this->apiResponse('Data berhasil dihapus!', null, null, Response::HTTP_OK);
+    }
+
+    public function select(Request $request)
+    {
+        return $this->classLevelService->selectSubClassLevel($request);
     }
 }
