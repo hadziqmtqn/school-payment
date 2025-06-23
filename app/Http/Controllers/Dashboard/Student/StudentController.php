@@ -9,6 +9,7 @@ use App\Models\SchoolYear;
 use App\Models\Student;
 use App\Models\StudentLevel;
 use App\Models\User;
+use App\Services\Student\StudentDestroyService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -25,12 +26,23 @@ use Yajra\DataTables\Facades\DataTables;
 
 class StudentController extends Controller implements HasMiddleware
 {
+    protected StudentDestroyService $studentDestroyService;
+
+    /**
+     * @param StudentDestroyService $studentDestroyService
+     */
+    public function __construct(StudentDestroyService $studentDestroyService)
+    {
+        $this->studentDestroyService = $studentDestroyService;
+    }
+
     public static function middleware(): array
     {
         // TODO: Implement middleware() method.
         return [
             new Middleware(PermissionMiddleware::using('student-read'), only: ['index']),
             new Middleware(PermissionMiddleware::using('student-write'), only: ['store', 'update']),
+            new Middleware(PermissionMiddleware::using('student-delete'), only: ['destroy', 'restore', 'permanentlyDelete']),
         ];
     }
 
@@ -158,10 +170,21 @@ class StudentController extends Controller implements HasMiddleware
         return $student;
     }
 
-    public function destroy(StudentLevel $student)
+    /**
+     * @throws Throwable
+     */
+    public function destroy(User $user)
     {
-        $student->delete();
+        return $this->studentDestroyService->destroy($user);
+    }
 
-        return response()->json();
+    public function restore($username)
+    {
+        return $this->studentDestroyService->restore($username);
+    }
+
+    public function permanentlyDelete($username)
+    {
+        return $this->studentDestroyService->permanentlyDelete($username);
     }
 }

@@ -36,6 +36,9 @@ Route::middleware('auth')->group(function () {
         Route::post('/datatable', [StudentController::class, 'datatable']);
         Route::post('/store', [StudentController::class, 'store'])->name('student.store');
         Route::get('/{user:username}/show', [StudentController::class, 'show'])->name('student.show');
+        Route::delete('/{user:username}/delete', [StudentController::class, 'destroy']);
+        Route::post('/{username}/restore', [StudentController::class, 'restore']);
+        Route::delete('/{username}/permanently-delete', [StudentController::class, 'permanentlyDelete']);
     });
 
     // TODO Settings

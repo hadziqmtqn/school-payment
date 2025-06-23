@@ -147,6 +147,6 @@ $(function () {
     });
 
     $(table).on('click', '.force-delete', function () {
-        handleAction(this, 'force-delete', 'Apakah Anda ingin menghapus permanen data ini?', 'HAPUS PERMANEN!', 'danger');
+        handleAction(this, 'permanently-delete', 'Apakah Anda ingin menghapus permanen data ini?', 'HAPUS PERMANEN!', 'danger');
     });
 });
