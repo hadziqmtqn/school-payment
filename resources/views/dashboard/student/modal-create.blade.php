@@ -1,5 +1,5 @@
 <div class="modal fade" id="modalCreate" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-simple modal-add-new-address">
+    <div class="modal-dialog modal-lg modal-simple">
         <div class="modal-content p-3 p-md-5">
             <div class="modal-body p-md-0">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -8,39 +8,91 @@
                     <p class="address-subtitle">Pilih metode tambah baru</p>
                 </div>
                 <form class="row g-4">
-                    <div class="col-12">
-                        <div class="row">
-                            <div class="col-md mb-md-0 mb-3">
-                                <div class="form-check custom-option custom-option-icon custom-option-label">
-                                    <label class="form-check-label custom-option-content" for="createManualy">
-                                          <span class="custom-option-body">
-                                            <i class="mdi mdi-plus"></i>
-                                            <span class="custom-option-title">Tambah Manual</span>
-                                          </span>
-                                        <input name="customRadioIcon" class="form-check-input" type="radio" value="" id="createManualy" checked />
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md mb-md-0 mb-3">
-                                <div class="form-check custom-option custom-option-icon custom-option-label">
-                                    <label class="form-check-label custom-option-content" for="createImport">
-                                          <span class="custom-option-body">
-                                            <i class="mdi mdi-file-excel-outline"></i>
-                                            <span class="custom-option-title"> Import Excel </span>
-                                          </span>
-                                        <input name="customRadioIcon" class="form-check-input" type="radio" value="" id="createImport" />
-                                    </label>
-                                </div>
-                            </div>
+                    <div class="col-md mb-md-0 mb-3">
+                        <div class="form-check custom-option custom-option-icon custom-option-label">
+                            <label class="form-check-label custom-option-content" for="createManualy">
+                                  <span class="custom-option-body">
+                                    <i class="mdi mdi-plus"></i>
+                                    <span class="custom-option-title">Tambah Manual</span>
+                                  </span>
+                                <input name="customRadioIcon" class="form-check-input" type="radio" value="" id="createManualy" checked />
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md mb-md-0 mb-3">
+                        <div class="form-check custom-option custom-option-icon custom-option-label">
+                            <label class="form-check-label custom-option-content" for="createImport">
+                                  <span class="custom-option-body">
+                                    <i class="mdi mdi-file-excel-outline"></i>
+                                    <span class="custom-option-title"> Import Excel </span>
+                                  </span>
+                                <input name="customRadioIcon" class="form-check-input" type="radio" value="" id="createImport" />
+                            </label>
                         </div>
                     </div>
                 </form>
                 <form action="{{ route('student.store') }}" id="manualForm" class="row g-4 mt-4 d-block" method="post">
                     @csrf
-                    <div class="col-12 col-md-6">
+                    <div class="col-12">
+                        <div class="divider text-start">
+                            <div class="divider-text">Data Pribadi</div>
+                        </div>
+                    </div>
+                    <div class="row p-0 m-0">
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                <input type="text" id="name" name="name" class="form-control" placeholder="Nama Lengkap" value="{{ old('name') }}"/>
+                                <label for="name">Nama Lengkap</label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                <input type="email" id="email" name="email" class="form-control" placeholder="Email Valid" value="{{ old('email') }}"/>
+                                <label for="email">Email Valid</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
                         <div class="form-floating form-floating-outline">
-                            <input type="text" id="modalAddressFirstName" name="modalAddressFirstName" class="form-control" placeholder="John" />
-                            <label for="modalAddressFirstName">First Name</label>
+                            <input type="number" id="whatsapp_number" name="whatsapp_number" class="form-control" placeholder="No. Whatsapp" value="{{ old('whatsapp_number') }}"/>
+                            <label for="whatsapp_number">No. Whatsapp</label>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-floating form-floating-outline">
+                            <select name="class_level_id" id="select-class-level-alternative" class="form-select select2"></select>
+                            <label for="select-class-level-alternative">Level Kelas</label>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-floating form-floating-outline">
+                            <select name="sub_class_level_id" id="select-sub-class-level-alternative" class="form-select select2"></select>
+                            <label for="select-sub-class-level-alternative">Sub Level Kelas</label>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="divider text-start">
+                            <div class="divider-text">Keamanan</div>
+                        </div>
+                    </div>
+                    <div class="row p-0 m-0">
+                        <div class="col-12 col-md-6 form-password-toggle">
+                            <div class="input-group input-group-merge">
+                                <div class="form-floating form-floating-outline">
+                                    <input class="form-control" type="password" id="newPassword" name="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" />
+                                    <label for="newPassword">Kata Sandi Baru</label>
+                                </div>
+                                <span class="input-group-text cursor-pointer"><i class="mdi mdi-eye-off-outline"></i></span>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 form-password-toggle">
+                            <div class="input-group input-group-merge">
+                                <div class="form-floating form-floating-outline">
+                                    <input class="form-control" type="password" name="password_confirmation" id="confirmPassword" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" />
+                                    <label for="confirmPassword">Konfirmasi Kata Sandi Baru</label>
+                                </div>
+                                <span class="input-group-text cursor-pointer"><i class="mdi mdi-eye-off-outline"></i></span>
+                            </div>
                         </div>
                     </div>
                     <div class="col-12 text-center">

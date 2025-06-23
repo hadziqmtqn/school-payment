@@ -3,13 +3,13 @@
  */
 
 'use strict';
-const formAuthentication = document.querySelector('#formAuthentication');
+const manualForm = document.querySelector('#manualForm');
 
 document.addEventListener('DOMContentLoaded', function (e) {
     (function () {
         // Form validation for Add new record
-        if (formAuthentication) {
-            const fv = FormValidation.formValidation(formAuthentication, {
+        if (manualForm) {
+            const fv = FormValidation.formValidation(manualForm, {
                 fields: {
                     name: {
                         validators: {
@@ -39,7 +39,14 @@ document.addEventListener('DOMContentLoaded', function (e) {
                             }
                         }
                     },
-                    mark_as_contact: {
+                    class_level_id: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Kolom ini wajib diisi'
+                            },
+                        }
+                    },
+                    sub_class_level_id: {
                         validators: {
                             notEmpty: {
                                 message: 'Kolom ini wajib diisi'
@@ -79,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
                     trigger: new FormValidation.plugins.Trigger(),
                     bootstrap5: new FormValidation.plugins.Bootstrap5({
                         eleValidClass: '',
-                        rowSelector: '.mb-3'
+                        rowSelector: '.col-12'
                     }),
                     submitButton: new FormValidation.plugins.SubmitButton(),
 
