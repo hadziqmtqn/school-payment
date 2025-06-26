@@ -47,6 +47,7 @@ class NewStudentJob implements ShouldQueue
             "{nama_siswa}" => $this->student->user?->name,
             "{kelas}" => $this->student->studentLevel?->classLevel?->name,
             "{sub_kelas}" => $this->student->studentLevel?->subClassLevel?->name,
+            "{email}" => $this->student->user?->email,
             "{password}" => $this->password
         ];
 
