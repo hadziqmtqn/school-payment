@@ -53,6 +53,19 @@
                         </div>
                     </div>
                     <div class="col-12">
+                        <div class="mb-2">Jenis Kelamin</div>
+                        <div class="mb-3">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="gender" id="male" value="L">
+                                <label class="form-check-label" for="male">Laki-laki</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="gender" id="famale" value="P">
+                                <label class="form-check-label" for="famale">Perempuan</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
                         <div class="form-floating form-floating-outline">
                             <input type="number" id="whatsapp_number" name="whatsapp_number" class="form-control" placeholder="No. Whatsapp" value="{{ old('whatsapp_number') }}"/>
                             <label for="whatsapp_number">No. Whatsapp</label>
@@ -92,6 +105,24 @@
                                     <label for="confirmPassword">Konfirmasi Kata Sandi Baru</label>
                                 </div>
                                 <span class="input-group-text cursor-pointer"><i class="mdi mdi-eye-off-outline"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="divider text-start">
+                            <div class="divider-text">Lainnya</div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="mb-2">Kirim Detail Akun Ke Email/No. Whatsapp Siswa</div>
+                        <div class="mb-3">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="send_detail_account" id="yes" value="1">
+                                <label class="form-check-label" for="yes">Ya</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="send_detail_account" id="no" value="0">
+                                <label class="form-check-label" for="no">Tidak</label>
                             </div>
                         </div>
                     </div>

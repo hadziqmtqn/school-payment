@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
@@ -29,5 +31,18 @@ class MessageTemplate extends Model
         static::creating(function (MessageTemplate $messageTemplate) {
             $messageTemplate->slug = Str::uuid()->toString();
         });
+    }
+
+    // TODO Scope
+    #[Scope]
+    protected function filterByCategory(Builder $query, $category): Builder
+    {
+        return $query->where('category', $category);
+    }
+
+    #[Scope]
+    protected function filterByRecipient(Builder $query, $recipient): Builder
+    {
+        return $query->where('recipient', $recipient);
     }
 }

@@ -41,6 +41,11 @@ class StudentLevel extends Model
         });
     }
 
+    public function schoolYear(): BelongsTo
+    {
+        return $this->belongsTo(SchoolYear::class);
+    }
+
     public function classLevel(): BelongsTo
     {
         return $this->belongsTo(ClassLevel::class);

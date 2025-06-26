@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard\Student;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Student\DatatableRequest;
 use App\Http\Requests\Student\StudentRequest;
+use App\Jobs\SendMessage\NewStudentJob;
 use App\Models\SchoolYear;
 use App\Models\Student;
 use App\Models\StudentLevel;
@@ -147,6 +148,10 @@ class StudentController extends Controller implements HasMiddleware
             $studentLevel->sub_class_level_id = $request->input('sub_class_level_id');
             $studentLevel->save();
             DB::commit();
+
+            if ($request->input('send_detail_account')) {
+                NewStudentJob::dispatch($student, $request->input('password'))->delay(now()->addSeconds(5));
+            }
         } catch (Exception $exception) {
             DB::rollBack();
             Log::error($exception->getMessage());

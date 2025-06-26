@@ -28,6 +28,13 @@ document.addEventListener('DOMContentLoaded', function (e) {
                             }
                         }
                     },
+                    gender: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Kolom ini wajib diisi'
+                            },
+                        }
+                    },
                     whatsapp_number: {
                         validators: {
                             notEmpty: {
@@ -79,6 +86,13 @@ document.addEventListener('DOMContentLoaded', function (e) {
                                 min: 8,
                                 message: 'Konfirmasi kata sandi harus minimal 8 karakter unik'
                             }
+                        }
+                    },
+                    send_detail_account: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Kolom ini wajib diisi'
+                            },
                         }
                     },
                 },
