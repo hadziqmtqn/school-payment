@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
@@ -26,5 +28,12 @@ class SubClassLevel extends Model
         static::creating(function (SubClassLevel $subClassLevel) {
             $subClassLevel->slug = Str::uuid()->toString();
         });
+    }
+
+    // TODO Scope
+    #[Scope]
+    protected function filterByName(Builder $query, $name): Builder
+    {
+        return $query->where('name', $name);
     }
 }

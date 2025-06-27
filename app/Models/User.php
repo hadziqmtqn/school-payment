@@ -95,4 +95,10 @@ class User extends Authenticatable implements HasMedia
     {
         return $query->where('username', $username);
     }
+
+    #[Scope]
+    protected function filterByEmail(Builder $query, $email): Builder
+    {
+        return $query->where('email', $email);
+    }
 }

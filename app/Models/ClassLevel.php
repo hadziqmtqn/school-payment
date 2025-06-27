@@ -39,4 +39,10 @@ class ClassLevel extends Model
     {
         return $query->where('is_active', true);
     }
+
+    #[Scope]
+    protected function filterByName(Builder $query, $name): Builder
+    {
+        return $query->where('name', $name);
+    }
 }

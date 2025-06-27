@@ -35,6 +35,13 @@ document.addEventListener('DOMContentLoaded', function (e) {
                             },
                         }
                     },
+                    reg_number: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Kolom ini wajib diisi'
+                            },
+                        }
+                    },
                     whatsapp_number: {
                         validators: {
                             notEmpty: {

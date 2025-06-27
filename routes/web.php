@@ -13,6 +13,7 @@ use App\Http\Controllers\Dashboard\Setting\MessageTemplateController;
 use App\Http\Controllers\Dashboard\Setting\PermissionController;
 use App\Http\Controllers\Dashboard\Setting\RoleController;
 use App\Http\Controllers\Dashboard\Setting\WhatsappApiConfigController;
+use App\Http\Controllers\Dashboard\Student\ImportNewStudentController;
 use App\Http\Controllers\Dashboard\Student\StudentController;
 use Illuminate\Support\Facades\Route;
 
@@ -40,6 +41,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/{username}/restore', [StudentController::class, 'restore']);
         Route::delete('/{username}/permanently-delete', [StudentController::class, 'permanentlyDelete']);
     });
+
+    Route::post('student-import', [ImportNewStudentController::class, 'store'])->name('import-new-student.store');
 
     // TODO Settings
     Route::prefix('menu')->group(function () {

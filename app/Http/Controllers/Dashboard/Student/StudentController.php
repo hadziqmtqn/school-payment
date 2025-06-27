@@ -137,6 +137,7 @@ class StudentController extends Controller implements HasMiddleware
 
             $student = new Student();
             $student->user_id = $user->id;
+            $student->reg_number = $request->input('reg_number');
             $student->whatsapp_number = $request->input('whatsapp_number');
             $student->gender = $request->input('gender');
             $student->save();

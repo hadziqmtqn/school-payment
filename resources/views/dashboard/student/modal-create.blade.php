@@ -67,20 +67,28 @@
                     </div>
                     <div class="col-12">
                         <div class="form-floating form-floating-outline">
+                            <input type="text" id="reg_number" name="reg_number" class="form-control" placeholder="Nomor Registrasi" value="{{ old('reg_number') }}"/>
+                            <label for="reg_number">Nomor Registrasi</label>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-floating form-floating-outline">
                             <input type="number" id="whatsapp_number" name="whatsapp_number" class="form-control" placeholder="No. Whatsapp" value="{{ old('whatsapp_number') }}"/>
                             <label for="whatsapp_number">No. Whatsapp</label>
                         </div>
                     </div>
-                    <div class="col-12">
-                        <div class="form-floating form-floating-outline">
-                            <select name="class_level_id" id="select-class-level-alternative" class="form-select select2"></select>
-                            <label for="select-class-level-alternative">Level Kelas</label>
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                <select name="class_level_id" id="select-class-level-alternative" class="form-select select2"></select>
+                                <label for="select-class-level-alternative">Level Kelas</label>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="form-floating form-floating-outline">
-                            <select name="sub_class_level_id" id="select-sub-class-level-alternative" class="form-select select2"></select>
-                            <label for="select-sub-class-level-alternative">Sub Level Kelas</label>
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                <select name="sub_class_level_id" id="select-sub-class-level-alternative" class="form-select select2"></select>
+                                <label for="select-sub-class-level-alternative">Sub Level Kelas</label>
+                            </div>
                         </div>
                     </div>
                     <div class="col-12">
@@ -131,9 +139,25 @@
                         <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
                     </div>
                 </form>
-                <form action="#" id="importForm" class="row g-4 mt-4 d-none" method="post">
+                <form action="{{ route('import-new-student.store') }}" id="importForm" class="row g-4 mt-4 d-none" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="col-12">
+                        <div class="alert alert-secondary alert-dismissible mb-4" role="alert">
+                            <h4 class="alert-heading d-flex align-items-center">
+                                <i class="mdi mdi-information-outline mdi-24px me-2"></i>Panduan
+                            </h4>
+                            <div class="mb-0">
+                                <ul>
+                                    <li>Download template <a href="{{ asset('assets/import-new-student.xlsx') }}">disini</a></li>
+                                    <li>Semua kolom wajib diisi</li>
+                                    <li>Tidak boleh mengganti nama kolom</li>
+                                    <li>Semua kolom menggunakan format cell <strong>TEXT</strong></li>
+                                    <li>Kolom <strong>Level Kelas</strong> menggunakan nama yang diambil dari <a href="{{ route('class-level.index') }}">data ini</a></li>
+                                    <li>Kolom <strong>Sub Level Kelas</strong> menggunakan nama yang diambil dari <a href="{{ route('class-level.index') }}">data ini</a></li>
+                                    <li>File Excel yang diizinkan berupa .xls dan .xlsx. Maksimal <strong>100 KB</strong></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="form-floating form-floating-outline">
                             <input type="file" id="file" name="file" class="form-control" accept=".xls,.xlsx" />
                             <label for="file">File Excel</label>

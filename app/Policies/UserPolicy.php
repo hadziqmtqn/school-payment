@@ -30,7 +30,7 @@ class UserPolicy
 
         if ($user->hasRole('student')) return $user->id === $model->id && $student;
 
-        return $student;
+        return true;
     }
 
     public function studentDestroy(User $user, User $model): bool
