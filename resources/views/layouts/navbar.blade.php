@@ -57,7 +57,7 @@
                 <li class="nav-item navbar-dropdown dropdown-user dropdown">
                     <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                         <div class="avatar avatar-online">
-                            <img src="{{ Auth::user()->hasMedia('photo') ? Auth::user()->getFirstTemporaryUrl(Carbon::now()->addMinutes(5), 'photo') : url('https://ui-avatars.com/api/?name='. Auth::user()->name .'&color=7F9CF5&background=EBF4FF') }}" alt class="w-px-40 h-auto rounded-circle"/>
+                            <img src="{{ Auth::user()->avatar() }}" alt class="w-px-40 h-auto rounded-circle"/>
                         </div>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
@@ -66,7 +66,7 @@
                                 <div class="d-flex">
                                     <div class="flex-shrink-0 me-3">
                                         <div class="avatar avatar-online">
-                                            <img src="{{ Auth::user()->hasMedia('photo') ? Auth::user()->getFirstTemporaryUrl(Carbon::now()->addMinutes(5), 'photo') : url('https://ui-avatars.com/api/?name='. Auth::user()->name .'&color=7F9CF5&background=EBF4FF') }}" alt class="w-px-40 h-auto rounded-circle"/>
+                                            <img src="{{ Auth::user()->avatar() }}" alt class="w-px-40 h-auto rounded-circle"/>
                                         </div>
                                     </div>
                                     <div class="flex-grow-1">

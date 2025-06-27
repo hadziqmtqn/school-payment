@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -49,5 +51,18 @@ class Student extends Model
     public function studentLevel(): HasOne
     {
         return $this->hasOne(StudentLevel::class, 'student_id');
+    }
+
+    // TODO Scope
+    #[Scope]
+    protected function userId(Builder $query, $userId): Builder
+    {
+        return $query->where('user_id', $userId);
+    }
+
+    #[Scope]
+    protected function filterByRegNumber(Builder $query, $regNumber): Builder
+    {
+        return $query->where('reg_number', $regNumber);
     }
 }

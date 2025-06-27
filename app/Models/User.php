@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
+use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Permission\Traits\HasRoles;
@@ -87,6 +89,11 @@ class User extends Authenticatable implements HasMedia
     public function student(): HasOne
     {
         return $this->hasOne(Student::class, 'user_id');
+    }
+
+    public function avatar(): string|UrlGenerator
+    {
+        return $this->hasMedia('photo') ? $this->getFirstTemporaryUrl(Carbon::now()->addHour(), 'photo') : url('https://ui-avatars.com/api/?name='. $this->name .'&color=7F9CF5&background=EBF4FF');
     }
 
     // TODO Scope

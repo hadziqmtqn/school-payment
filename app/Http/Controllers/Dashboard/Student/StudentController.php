@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard\Student;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Student\DatatableRequest;
 use App\Http\Requests\Student\StudentRequest;
+use App\Http\Requests\Student\UpdateStudentRequest;
 use App\Jobs\SendMessage\NewStudentJob;
 use App\Models\SchoolYear;
 use App\Models\Student;
@@ -162,18 +163,72 @@ class StudentController extends Controller implements HasMiddleware
         return redirect()->back()->with('success', 'Data berhasil disimpan!');
     }
 
-    public function show(User $user)
+    public function show(User $user): View
     {
         Gate::authorize('student', $user);
 
-        return $user;
+        $title = 'Siswa';
+        $subTitle = 'Detail Siswa';
+        $user->load([
+            'student.studentLevel' => function ($query) {
+                $query->whereHas('schoolYear', fn($query) => $query->active());
+            },
+            'student.studentLevel.classLevel',
+            'student.studentLevel.subClassLevel',
+        ]);
+
+        return \view('dashboard.student.show', compact('title', 'subTitle', 'user'));
     }
 
-    public function update(StudentRequest $request, StudentLevel $student)
+    /**
+     * @throws Throwable
+     */
+    public function update(UpdateStudentRequest $request, User $user): RedirectResponse
     {
-        $student->update($request->validated());
+        Gate::authorize('student', $user);
 
-        return $student;
+        try {
+            $user->load([
+                'student.studentLevel' => function ($query) {
+                    $query->whereHas('schoolYear', fn($query) => $query->active());
+                },
+                'student.studentLevel.classLevel',
+                'student.studentLevel.subClassLevel',
+            ]);
+
+            DB::beginTransaction();
+            $user->name = $request->input('name');
+            $user->email = $request->input('email');
+            $user->password = $request->input('password') ? Hash::make($request->input('password')) : $user->password;
+            $user->is_active = $request->input('is_active');
+            $user->save();
+
+            $student = $user->student;
+            $student->user_id = $user->id;
+            $student->reg_number = $request->input('reg_number');
+            $student->whatsapp_number = $request->input('whatsapp_number');
+            $student->gender = $request->input('gender');
+            $student->save();
+
+            if ($user->student?->studentLevel && !$user->student?->studentLevel?->is_graduate) {
+                $studentLevel = $user->student->studentLevel;
+                $studentLevel->class_level_id = $request->input('class_level_id');
+                $studentLevel->sub_class_level_id = $request->input('sub_class_level_id');
+                $studentLevel->save();
+            }
+
+            DB::commit();
+
+            if ($request->input('send_detail_account')) {
+                NewStudentJob::dispatch($student, $request->input('password'))->delay(now()->addSeconds(5));
+            }
+        } catch (Exception $exception) {
+            DB::rollBack();
+            Log::error($exception->getMessage());
+            return redirect()->back()->with('error', 'Data gagal disimpan!');
+        }
+
+        return redirect()->back()->with('success', 'Data berhasil disimpan!');
     }
 
     /**
