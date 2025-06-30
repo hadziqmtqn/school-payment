@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard\Student;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Student\PromotedToNextGrade\DatatableRequest;
 use App\Models\ClassLevel;
+use App\Models\SubClassLevel;
 use App\Models\User;
 use App\Services\Reference\SchoolYearService;
 use Exception;
@@ -51,8 +52,10 @@ class PromotedToNextGradeController extends Controller
                         /*'student.studentLevel' => function ($query) use ($request) {
                             $query->schoolYearId($request->input('school_year_id'));
                         },*/
-                        'student.studentLevel.classLevel',
-                        'student.studentLevel.subClassLevel'
+                        'student:id,user_id',
+                        'student.studentLevel:id,student_id,class_level_id,sub_class_level_id,is_graduate',
+                        'student.studentLevel.classLevel:id,name',
+                        'student.studentLevel.subClassLevel:id,name'
                     ])
                     ->whereHas('student.studentLevel', function ($query) use ($currentLevel, $nextLevel, $currentSchoolYear, $nextSchoolYear, $currentClassLevel, $nextClassLevel) {
                         /**
@@ -92,6 +95,26 @@ class PromotedToNextGradeController extends Controller
                         });
                     })
                     ->addColumn('classLevel', fn($row) => !$row->student?->studentLevel?->is_graduate ? $row->student?->studentLevel?->classLevel?->name . ' ' . $row->student?->studentLevel?->subClassLevel?->name : 'Lulus')
+                    ->addColumn('subClassLevel', function ($row) {
+                        $subClassLevels = SubClassLevel::all()
+                            ->pluck('name', 'id');
+
+                        // Build options string
+                        $options = '';
+                        foreach ($subClassLevels as $id => $name) {
+                            $options .= '<option value="'. $id .'" '. ($row->student?->studentLevel?->sub_class_level_id == $id ? 'selected' : null) .'>'. $name .'</option>';
+                        }
+
+                        return '<div class="form-floating form-floating-outline">
+                            <select class="form-select" name="next_sub_class_level['. $row->id .']" id="nextSubClassLevel-'. $row->id .'" aria-label="subClassLevel">'. $options .'</select>
+                          </div>';
+                    })
+                    ->addColumn('promoted', function ($row) {
+                        return '<div class="form-check">
+                            <input class="form-check-input" name="promoted['. $row->id .']" type="checkbox" id="promoted-'. $row->id .'" value="" checked="">
+                          </div>';
+                    })
+                    ->rawColumns(['promoted', 'subClassLevel'])
                     ->make();
             }
         }catch (Exception $exception) {

@@ -20,7 +20,7 @@
                 </div>
             </div>
             <div class="form-floating form-floating-outline mb-3 filter">
-                <select id="select-class-level" class="form-select select2" data-allow-clear="true"></select>
+                <select id="select-class-level" class="form-select select2"></select>
                 <label for="select-class-level">Level Kelas Saat Ini</label>
             </div>
         </div>
@@ -28,15 +28,14 @@
     <div class="row">
         <div class="col-md-6">
             <div class="card mb-3">
-                <h5 class="card-header" id="currentLevelName">Dari Kelas -</h5>
                 <div class="card-datatable">
                     <table class="table table-striped text-nowrap" id="datatable">
                         <thead>
                         <tr>
                             <th>#</th>
                             <th>Nama</th>
-                            <th>Kelas</th>
-                            <th>Opsi</th>
+                            <th>Naik Kelas</th>
+                            <th>Sub Level Kelas <i class="mdi mdi-information-outline small" data-bs-toggle="tooltip" title="Sub Level Kelas Selanjutnya"></i></th>
                         </tr>
                         </thead>
                     </table>
@@ -65,4 +64,6 @@
 
 @section('scripts')
     <script src="{{ asset('js/class-level/select.js') }}"></script>
+    <script src="{{ asset('js/student/promoted-to-next-grade/datatable.js') }}"></script>
+    <script src="{{ asset('js/student/promoted-to-next-grade/card-title.js') }}"></script>
 @endsection
