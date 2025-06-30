@@ -1,11 +1,26 @@
 [
   {
-    "name": "Siswa",
+    "name": "Manajemen Siswa",
     "type": "main_menu",
     "visibility": ["student-read"],
-    "url": "/student",
+    "url": "#",
     "icon": "account-tie-outline",
-    "sub_menu": null
+    "sub_menu": [
+      {
+        "name": "Siswa",
+        "type": "sub_menu",
+        "visibility": ["student-read"],
+        "url": "/student",
+        "icon": "account-group-outline"
+      },
+      {
+        "name": "Naik Kelas",
+        "type": "sub_menu",
+        "visibility": ["student-read"],
+        "url": "/promoted-to-next-grade",
+        "icon": "chart-timeline-variant-shimmer"
+      }
+    ]
   },
   {
     "name": "Referensi",

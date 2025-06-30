@@ -14,6 +14,7 @@ use App\Http\Controllers\Dashboard\Setting\PermissionController;
 use App\Http\Controllers\Dashboard\Setting\RoleController;
 use App\Http\Controllers\Dashboard\Setting\WhatsappApiConfigController;
 use App\Http\Controllers\Dashboard\Student\ImportNewStudentController;
+use App\Http\Controllers\Dashboard\Student\PromotedToNextGradeController;
 use App\Http\Controllers\Dashboard\Student\StudentController;
 use Illuminate\Support\Facades\Route;
 
@@ -44,6 +45,10 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::post('student-import', [ImportNewStudentController::class, 'store'])->name('import-new-student.store');
+
+    Route::prefix('promoted-to-next-grade')->group(function () {
+        Route::get('/', [PromotedToNextGradeController::class, 'index'])->name('promoted-to-next-grade.index');
+    });
 
     // TODO Settings
     Route::prefix('menu')->group(function () {

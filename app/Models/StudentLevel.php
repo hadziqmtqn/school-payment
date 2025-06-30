@@ -85,4 +85,16 @@ class StudentLevel extends Model
     {
         return $query->where('student_id', $studentId);
     }
+
+    #[Scope]
+    protected function classLevelId(Builder $query, $classLevelId): Builder
+    {
+        return $query->where('class_level_id', $classLevelId);
+    }
+
+    #[Scope]
+    protected function graduate(Builder $query): Builder
+    {
+        return $query->where('is_graduate', true);
+    }
 }

@@ -51,4 +51,16 @@ class SchoolYearService
             'year' => $schoolYear?->year
         ]);
     }
+
+    public function nextYear(): Collection
+    {
+        $schoolYear = $this->schoolYear
+            ->nextYear()
+            ->first();
+
+        return collect([
+            'id' => $schoolYear?->id,
+            'year' => $schoolYear?->year
+        ]);
+    }
 }

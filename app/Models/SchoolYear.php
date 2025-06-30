@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
 class SchoolYear extends Model
@@ -60,5 +61,18 @@ class SchoolYear extends Model
     protected function active(Builder $query): Builder
     {
         return $query->where('is_active', true);
+    }
+
+    #[Scope]
+    protected function nextYear(Builder $query): Builder
+    {
+        $now = Carbon::now();
+        $currentYear = $now->year + 1;
+        $nextYear = $now->year + 2;
+
+        return $query->where([
+            'first_year' => $currentYear,
+            'last_year' => $nextYear
+        ]);
     }
 }

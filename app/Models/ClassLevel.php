@@ -33,6 +33,11 @@ class ClassLevel extends Model
         });
     }
 
+    public function isMaxSerialNumber(): bool
+    {
+        return $this->serial_number == self::max('serial_number');
+    }
+
     // TODO Scope
     #[Scope]
     protected function active(Builder $query): Builder
@@ -44,5 +49,17 @@ class ClassLevel extends Model
     protected function filterByName(Builder $query, $name): Builder
     {
         return $query->where('name', $name);
+    }
+
+    #[Scope]
+    protected function oneNextLevel(Builder $query, $id): Builder
+    {
+        $current = self::find($id);
+        if (!$current) {
+            // Return kosong jika tidak ditemukan
+            return $query->whereRaw('1=0');
+        }
+
+        return $query->where('serial_number', $current->serial_number + 1);
     }
 }

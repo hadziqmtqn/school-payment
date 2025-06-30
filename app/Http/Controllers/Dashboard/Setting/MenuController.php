@@ -58,7 +58,8 @@ class MenuController extends Controller implements HasMiddleware
             if ($request->ajax()) {
                 $data = Menu::query()
                     ->orderBy('type')
-                    ->orderBy('main_menu');
+                    ->orderBy('main_menu')
+                    ->orderBy('serial_number');
 
                 return DataTables::eloquent($data)
                     ->addIndexColumn()
