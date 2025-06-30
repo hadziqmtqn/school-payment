@@ -108,4 +108,10 @@ class User extends Authenticatable implements HasMedia
     {
         return $query->where('email', $email);
     }
+
+    #[Scope]
+    protected function active(Builder $query): Builder
+    {
+        return $query->where('is_active', true);
+    }
 }

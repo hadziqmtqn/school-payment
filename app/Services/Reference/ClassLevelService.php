@@ -43,9 +43,13 @@ class ClassLevelService
         }
 
         return $this->apiResponse('Get data success', $classLevels->map(function (ClassLevel $classLevel) {
+            $nextClassLevel = $this->classLevel->oneNextLevel($classLevel->id)
+                ->first();
+
             return collect([
                 'id' => $classLevel->id,
-                'name' => $classLevel->name
+                'name' => $classLevel->name,
+                'nextLevel' => $nextClassLevel?->name
             ]);
         }), null, Response::HTTP_OK);
     }

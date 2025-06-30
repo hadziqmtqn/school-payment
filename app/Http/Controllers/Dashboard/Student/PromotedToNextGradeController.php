@@ -28,8 +28,9 @@ class PromotedToNextGradeController extends Controller
     public function index(): View
     {
         $title = 'Naik Kelas';
+        $nextSchoolYear = $this->schoolYearService->nextYear();
 
-        return \view('dashboard.student.promoted-to-next-grade', compact('title'));
+        return \view('dashboard.student.promoted-to-next-grade', compact('title', 'nextSchoolYear'));
     }
 
     public function datatable(DatatableRequest $request): JsonResponse
@@ -78,15 +79,7 @@ class PromotedToNextGradeController extends Controller
                                 ->graduate();
                         });
                     })
-                    ->when($request->get('is_active'), function ($query) use ($request) {
-                        $query->when($request->get('is_active') != 'deleted', function ($query) use ($request) {
-                            $query->where('is_active', ($request->get('is_active') == 'active'));
-                        });
-
-                        $query->when($request->get('is_active') == 'deleted', function ($query) use ($request) {
-                            $query->onlyTrashed();
-                        });
-                    })
+                    ->active()
                     ->orderBy('name');
 
                 return DataTables::eloquent($data)
@@ -98,26 +91,7 @@ class PromotedToNextGradeController extends Controller
                             $query->whereAny(['name', 'email'], 'LIKE', '%' . $search . '%');
                         });
                     })
-                    ->addColumn('regNumber', fn($row) => $row->student?->reg_number)
-                    ->addColumn('whatsappNumber', fn($row) => $row->student?->whatsapp_number)
-                    ->addColumn('classLevel', fn($row) => $row->student?->studentLevel?->classLevel?->name . ' ' . $row->student?->studentLevel?->subClassLevel?->name)
-                    ->addColumn('is_active', function ($row) {
-                        return '<span class="badge rounded-pill '. ($row->is_active ? 'bg-primary' : 'bg-danger') .'">'. ($row->is_active ? 'Aktif' : 'Tidak Aktif') .'</span>';
-                    })
-                    ->addColumn('action', function ($row) {
-                        $btn = null;
-
-                        if (!$row->deleted_at) {
-                            $btn = '<a href="' . route('student.show', $row->username) . '" class="btn btn-icon btn-sm btn-primary"><i class="mdi mdi-eye"></i></a> ';
-                            $btn .= '<button type="button" data-username="' . $row->username . '" class="delete btn btn-icon btn-sm btn-danger"><i class="mdi mdi-trash-can-outline"></i></button>';
-                        }else {
-                            $btn .= '<button type="button" data-username="' . $row->username . '" class="restore btn btn-icon btn-sm btn-warning"><i class="mdi mdi-restore-alert"></i></button> ';
-                            $btn .= '<button type="button" data-username="' . $row->username . '" class="force-delete btn btn-sm btn-danger"><i class="mdi mdi-trash-can-outline me-1"></i>Hapus Permanen</button>';
-                        }
-
-                        return $btn;
-                    })
-                    ->rawColumns(['is_active', 'action'])
+                    ->addColumn('classLevel', fn($row) => !$row->student?->studentLevel?->is_graduate ? $row->student?->studentLevel?->classLevel?->name . ' ' . $row->student?->studentLevel?->subClassLevel?->name : 'Lulus')
                     ->make();
             }
         }catch (Exception $exception) {
