@@ -106,6 +106,12 @@ class PromotedToNextGradeController extends Controller implements HasMiddleware
                             $query->whereAny(['name', 'email'], 'LIKE', '%' . $search . '%');
                         });
                     })
+                    ->addColumn('name', function ($row) {
+                        $element = '<input type="hidden" name="user_id['. $row->id .']" id="userId-'. $row->id .'" value="'. $row->id .'"> ';
+                        $element .= $row->name;
+
+                        return $element;
+                    })
                     ->addColumn('classLevel', fn($row) => !$row->student?->studentLevel?->is_graduate ? $row->student?->studentLevel?->classLevel?->name . ' ' . $row->student?->studentLevel?->subClassLevel?->name : 'Lulus')
                     ->addColumn('subClassLevel', function ($row) {
                         $subClassLevels = SubClassLevel::all()
@@ -126,7 +132,7 @@ class PromotedToNextGradeController extends Controller implements HasMiddleware
                             <input class="form-check-input" name="promoted['. $row->id .']" type="checkbox" id="promoted-'. $row->id .'" value="" checked="">
                           </div>';
                     })
-                    ->rawColumns(['promoted', 'subClassLevel'])
+                    ->rawColumns(['name', 'promoted', 'subClassLevel'])
                     ->make();
             }
         }catch (Exception $exception) {
@@ -141,6 +147,7 @@ class PromotedToNextGradeController extends Controller implements HasMiddleware
      */
     public function store(PromotedRequest $request): \Symfony\Component\HttpFoundation\JsonResponse
     {
+        dd($request->all());
         try {
             $nextSchoolYear = $this->schoolYearService->nextYear();
 
@@ -156,7 +163,7 @@ class PromotedToNextGradeController extends Controller implements HasMiddleware
                 ->whereIn('user_id', $request->input('user_id', []))
                 ->get();
 
-            $nextSubClassLevels = $request->input('sub_class_level_id', []);
+            $nextSubClassLevels = $request->input('next_sub_class_level', []);
             $promoted = $request->input('promoted', []);
 
             foreach ($students as $student) {

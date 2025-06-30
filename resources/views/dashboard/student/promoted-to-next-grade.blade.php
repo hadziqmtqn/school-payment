@@ -28,18 +28,23 @@
     <div class="row">
         <div class="col-md-6">
             <div class="card mb-3">
-                <div class="card-datatable">
-                    <table class="table table-striped text-nowrap" id="datatable">
-                        <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Nama</th>
-                            <th>Naik Kelas</th>
-                            <th>Sub Level Kelas <i class="mdi mdi-information-outline small" data-bs-toggle="tooltip" title="Sub Level Kelas Selanjutnya"></i></th>
-                        </tr>
-                        </thead>
-                    </table>
-                </div>
+                <form onsubmit="return false" id="promotedToNextGradeForm">
+                    <div class="card-datatable">
+                        <table class="table table-striped text-nowrap" id="datatable">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nama</th>
+                                <th>Naik Kelas</th>
+                                <th>Sub Level Kelas <i class="mdi mdi-information-outline small" data-bs-toggle="tooltip" title="Sub Level Kelas Selanjutnya"></i></th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        <button type="button" class="btn btn-primary waves-light waves-effect">Submit</button>
+                    </div>
+                </form>
             </div>
         </div>
         <div class="col-md-6">
@@ -66,4 +71,5 @@
     <script src="{{ asset('js/class-level/select.js') }}"></script>
     <script src="{{ asset('js/student/promoted-to-next-grade/datatable.js') }}"></script>
     <script src="{{ asset('js/student/promoted-to-next-grade/card-title.js') }}"></script>
+    <script src="{{ asset('js/student/promoted-to-next-grade/save-data-promoted.js') }}"></script>
 @endsection

@@ -19,8 +19,8 @@ class PromotedRequest extends FormRequest
             'user_id.*' => ['required', 'integer', 'exists:users,id'],
             'promoted' => ['required', 'array'],
             'promoted.*' => ['required', 'in:yes,no'],
-            'sub_class_level_id' => ['required', 'array'],
-            'sub_class_level_id.*' => ['required', 'integer', 'exists:sub_class_levels,id']
+            'next_sub_class_level' => ['required', 'array'],
+            'next_sub_class_level.*' => ['required', 'integer', 'exists:sub_class_levels,id']
         ];
     }
 

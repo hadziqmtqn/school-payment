@@ -49,6 +49,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('promoted-to-next-grade')->group(function () {
         Route::get('/', [PromotedToNextGradeController::class, 'index'])->name('promoted-to-next-grade.index');
         Route::post('/datatable', [PromotedToNextGradeController::class, 'datatable']);
+        Route::post('/store', [PromotedToNextGradeController::class, 'store']);
     });
 
     // TODO Settings
