@@ -4,18 +4,38 @@ namespace App\Http\Controllers\Dashboard\Student;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Student\PromotedToNextGrade\DatatableRequest;
+use App\Http\Requests\Student\PromotedToNextGrade\PromotedRequest;
 use App\Models\ClassLevel;
+use App\Models\Student;
+use App\Models\StudentLevel;
 use App\Models\SubClassLevel;
 use App\Models\User;
 use App\Services\Reference\SchoolYearService;
+use App\Traits\ApiResponse;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
+use Spatie\Permission\Middleware\PermissionMiddleware;
+use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 use Yajra\DataTables\Facades\DataTables;
 
-class PromotedToNextGradeController extends Controller
+class PromotedToNextGradeController extends Controller implements HasMiddleware
 {
+    use ApiResponse;
+
+    public static function middleware(): array
+    {
+        // TODO: Implement middleware() method.
+        return [
+            new Middleware(PermissionMiddleware::using('student-write'))
+        ];
+    }
+
     protected SchoolYearService $schoolYearService;
 
     /**
@@ -49,38 +69,30 @@ class PromotedToNextGradeController extends Controller
             if ($request->ajax()) {
                 $data = User::query()
                     ->with([
-                        /*'student.studentLevel' => function ($query) use ($request) {
-                            $query->schoolYearId($request->input('school_year_id'));
-                        },*/
+                        'student.studentLevel' => function ($query) use ($currentLevel, $nextLevel, $currentSchoolYear, $nextSchoolYear, $currentClassLevel, $nextClassLevel) {
+                            $query->promotedToNextGrade([
+                                'currentLevel' => $currentLevel,
+                                'nextLevel' => $nextLevel,
+                                'currentClassLevel' => $currentClassLevel,
+                                'nextClassLevel' => $nextClassLevel,
+                                'currentSchoolYear' => $currentSchoolYear,
+                                'nextSchoolYear' => $nextSchoolYear
+                            ]);
+                        },
                         'student:id,user_id',
                         'student.studentLevel:id,student_id,class_level_id,sub_class_level_id,is_graduate',
                         'student.studentLevel.classLevel:id,name',
                         'student.studentLevel.subClassLevel:id,name'
                     ])
                     ->whereHas('student.studentLevel', function ($query) use ($currentLevel, $nextLevel, $currentSchoolYear, $nextSchoolYear, $currentClassLevel, $nextClassLevel) {
-                        /**
-                         * Jika level saat ini yang diambil, data yang diambil berdasarkan tahun ajaran aktif dan level kelas yang dipilih
-                        */
-                        $query->when($currentLevel == 'yes', function ($query) use ($currentSchoolYear, $currentClassLevel) {
-                            $query->schoolYearId($currentSchoolYear['id'])
-                                ->classLevelId($currentClassLevel?->id);
-                        });
-
-                        /**
-                         * Jika setelah level saat ini yang diambil, data yang diambil tahun ajaran berikutnya dan level kelas 1 tingkat selanjutnya (bukan tingkat tertinggi) dari level kelas yang dipilih
-                        */
-                        $query->when($nextLevel == 'yes' && !$nextClassLevel?->isMaxSerialNumber(), function ($query) use ($nextSchoolYear, $nextClassLevel) {
-                            $query->schoolYearId($nextSchoolYear['id'])
-                                ->classLevelId($nextClassLevel?->id);
-                        });
-
-                        /**
-                         * Jika level berikutnya yang diambil dan level kelas tertinggi, ambil data berdasarkan tahun ajaran berikutnya dan telah lulus
-                        */
-                        $query->when($nextLevel == 'yes' && $nextClassLevel?->isMaxSerialNumber(), function ($query) use ($nextSchoolYear) {
-                            $query->schoolYearId($nextSchoolYear['id'])
-                                ->graduate();
-                        });
+                        $query->promotedToNextGrade([
+                            'currentLevel' => $currentLevel,
+                            'nextLevel' => $nextLevel,
+                            'currentClassLevel' => $currentClassLevel,
+                            'nextClassLevel' => $nextClassLevel,
+                            'currentSchoolYear' => $currentSchoolYear,
+                            'nextSchoolYear' => $nextSchoolYear
+                        ]);
                     })
                     ->active()
                     ->orderBy('name');
@@ -122,5 +134,67 @@ class PromotedToNextGradeController extends Controller
         }
 
         return response()->json(true);
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function store(PromotedRequest $request): \Symfony\Component\HttpFoundation\JsonResponse
+    {
+        try {
+            $nextSchoolYear = $this->schoolYearService->nextYear();
+
+            if (!$nextSchoolYear['id']) return $this->apiResponse('Tahun ajaran selanjutnya tidak ditemukan', null, null, Response::HTTP_BAD_REQUEST);
+
+            DB::beginTransaction();
+
+            $students = Student::with([
+                'studentLevel' => function ($query) {
+                    $query->whereHas('schoolYear', fn($query) => $query->active());
+                }
+            ])
+                ->whereIn('user_id', $request->input('user_id', []))
+                ->get();
+
+            $nextSubClassLevels = $request->input('sub_class_level_id', []);
+            $promoted = $request->input('promoted', []);
+
+            foreach ($students as $student) {
+                $nextClassLevel = ClassLevel::oneNextLevel($student->studentLevel?->class_level_id)
+                    ->first();
+
+                if ($nextClassLevel) {
+                    if ($promoted[$student->id] == 'yes') {
+                        $studentLevel = StudentLevel::filterData([
+                            'class_level_id'
+                        ])
+                            ->studentId($student->id)
+                            ->schoolYearId($nextSchoolYear['id'])
+                            ->lockForUpdate()
+                            ->firstOrNew();
+                        $studentLevel->student_id = $student->id;
+                        $studentLevel->school_year_id = $nextSchoolYear['id'];
+                        $studentLevel->class_level_id = $nextClassLevel->id;
+                        $studentLevel->sub_class_level_id = $nextSubClassLevels[$student->id] ?? null;
+                    }else {
+                        $studentLevel = $student->studentLevel;
+                        $studentLevel->is_active = false;
+                    }
+                }else {
+                    $studentLevel = $student->studentLevel;
+                    $studentLevel->is_active = false;
+                    $studentLevel->is_graduate = true;
+                }
+
+                $studentLevel->save();
+            }
+            DB::commit();
+        } catch (Exception $exception) {
+            DB::rollBack();
+            Log::error($exception->getMessage());
+            return $this->apiResponse('Data gagal disimpan!', null, null, Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        return $this->apiResponse('Data berhasil disimpan!', null, null, Response::HTTP_OK);
     }
 }

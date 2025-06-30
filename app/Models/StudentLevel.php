@@ -97,4 +97,41 @@ class StudentLevel extends Model
     {
         return $query->where('is_graduate', true);
     }
+
+    #[Scope]
+    protected function promotedToNextGrade(Builder $query, array $filter): Builder
+    {
+        $currentLevel = $filter['currentLevel'];
+        $nextLevel = $filter['nextLevel'];
+        $currentClassLevel = $filter['currentClassLevel'];
+        $nextClassLevel = $filter['nextClassLevel'];
+        $currentSchoolYear = $filter['currentSchoolYear'];
+        $nextSchoolYear = $filter['nextSchoolYear'];
+
+        /**
+         * Jika level saat ini yang diambil, data yang diambil berdasarkan tahun ajaran aktif dan level kelas yang dipilih
+         */
+        $query->when($currentLevel == 'yes', function ($query) use ($currentSchoolYear, $currentClassLevel) {
+            $query->schoolYearId($currentSchoolYear['id'])
+                ->classLevelId($currentClassLevel?->id);
+        });
+
+        /**
+         * Jika setelah level saat ini yang diambil, data yang diambil tahun ajaran berikutnya dan level kelas 1 tingkat selanjutnya (bukan tingkat tertinggi) dari level kelas yang dipilih
+         */
+        $query->when($nextLevel == 'yes' && !$nextClassLevel?->isMaxSerialNumber(), function ($query) use ($nextSchoolYear, $nextClassLevel) {
+            $query->schoolYearId($nextSchoolYear['id'])
+                ->classLevelId($nextClassLevel?->id);
+        });
+
+        /**
+         * Jika level berikutnya yang diambil dan level kelas tertinggi, ambil data berdasarkan tahun ajaran berikutnya dan telah lulus
+         */
+        $query->when($nextLevel == 'yes' && $nextClassLevel?->isMaxSerialNumber(), function ($query) use ($nextSchoolYear) {
+            $query->schoolYearId($nextSchoolYear['id'])
+                ->graduate();
+        });
+
+        return $query;
+    }
 }
